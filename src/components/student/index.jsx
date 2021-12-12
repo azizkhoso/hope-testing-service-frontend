@@ -1,4 +1,4 @@
-import { IconButton } from '@mui/material';
+import { IconButton, Typography } from '@mui/material';
 import React from 'react';
 
 import {
@@ -24,6 +24,7 @@ export default function Student() {
           <IconButton className="block md:hidden" onClick={() => setOpenDrawer(true)}>
             <Menu />
           </IconButton>
+          <Typography variant="h5" className="flex items-center flex-grow">Student Name</Typography>
           <IconButton>
             <Logout />
           </IconButton>

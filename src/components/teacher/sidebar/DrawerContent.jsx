@@ -59,7 +59,7 @@ export default function DrawerContent({ handleClose }) {
         <ListItem sx={{ minHeight: '40px' }}>
           <ListItemIcon className="flex items-center">
             <ListItemIcon><AccountCircle className="w-9 h-9" /></ListItemIcon>
-            <ListItemText primary="Student" primaryTypographyProps={{ className: 'font-extrabold text-2xl' }} />
+            <ListItemText primary="Teacher" primaryTypographyProps={{ className: 'font-extrabold text-2xl' }} />
           </ListItemIcon>
         </ListItem>
         <Divider orientation="horizontal" />
