@@ -42,10 +42,10 @@ export default function StudentSignup() {
   return (
     <Card elevation={3} className="w-full pb-6 my-6">
       <Stack spacing={2}>
-        <div className="flex">
+        {/* <div className="flex">
           <Button variant="contained" className="flex-grow">Teacher</Button>
           <Button variant="outlined" className="flex-grow">Student</Button>
-        </div>
+        </div> */}
         <Typography variant="h5" align="center">Welcome to</Typography>
         <img className="self-center w-32" alt="hts logo" src={logo} />
         <Typography variant="h5" align="center">Sign up as a Student</Typography>

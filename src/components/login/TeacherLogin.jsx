@@ -8,12 +8,15 @@ import {
   TextField,
 } from '@mui/material';
 
+import { useNavigate } from 'react-router-dom';
+
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 
 import logo from '../../assests/logo.png';
 
-export default function AdminLogin() {
+export default function TeacherLogin() {
+  const navigate = useNavigate();
   // Form requirements
   const schema = yup.object({
     email: yup.string().required('Email is required').email('Enter a valid email'),
@@ -29,10 +32,15 @@ export default function AdminLogin() {
   });
   // -----------------
   return (
-    <Card elevation={3} className="w-full py-6 my-6">
+    <Card elevation={3} className="w-full pb-6 my-6">
       <Stack spacing={2}>
+        <div className="flex">
+          <Button variant="outlined" className="flex-grow" onClick={() => navigate('/login/teacher')}>Teacher</Button>
+          <Button variant="contained" className="flex-grow" onClick={() => navigate('/login/student')}>Student</Button>
+        </div>
+        <Typography variant="h5" align="center">Welcome Back</Typography>
         <img className="self-center w-32" alt="hts logo" src={logo} />
-        <Typography variant="h5" align="center">Login as an Admin</Typography>
+        <Typography variant="h5" align="center">Login as a Teacher</Typography>
         <Stack spacing={2} className="px-6" component="form" onSubmit={formik.handleSubmit}>
           <TextField
             variant="outlined"
@@ -55,7 +63,7 @@ export default function AdminLogin() {
             error={formik.touched.password && formik.errors.password}
             helperText={formik.touched.password && formik.errors.password}
           />
-          <Button type="submit" variant="contained">Login as an Admin</Button>
+          <Button type="submit" variant="contained">Login as a Teacher</Button>
         </Stack>
       </Stack>
     </Card>
