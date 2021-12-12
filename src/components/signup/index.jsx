@@ -11,7 +11,6 @@ import {
 } from '@mui/material';
 
 import StudentSignup from './StudentSignup';
-import TeacherSignup from './TeacherSignup';
 
 export default function SignUp() {
   return (
@@ -20,7 +19,7 @@ export default function SignUp() {
         <Routes>
           <Route index element={<Navigate replace to="/signup/student" />} />
           <Route path="/student" element={<StudentSignup />} />
-          <Route path="/teacher" element={<TeacherSignup />} />
+          <Route path="/*" element={<Navigate replace to="/not-found" />} />
         </Routes>
       </Grid>
     </Grid>

@@ -24,7 +24,8 @@ export default function AppRoutes() {
           <Route path="/student/*" element={<Student />} />
           <Route path="/teacher/*" element={<Teacher />} />
           <Route path="/admin/*" element={<Admin />} />
-          <Route path="*" element={<NotFound />} />
+          <Route path="/not-found/*" element={<NotFound />} />
+          <Route path="*" element={<Navigate replace to="/not-found" />} />
         </Routes>
       </div>
     </BrowserRouter>
