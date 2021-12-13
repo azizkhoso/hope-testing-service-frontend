@@ -12,10 +12,14 @@ import {
   Menu,
 } from '@mui/icons-material';
 
+import { useSelector } from 'react-redux';
+
 import Sidebar from './sidebar';
 
 export default function Teacher() {
   const [openDrawer, setOpenDrawer] = React.useState(false);
+  const { account } = useSelector((s) => s);
+  if (!account.teacher) return <Navigate replace to="/login/teacher" />;
   return (
     <div className="flex">
       <Sidebar open={openDrawer} setOpen={setOpenDrawer} />
