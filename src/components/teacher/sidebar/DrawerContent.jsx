@@ -8,13 +8,11 @@ import {
   ListItemIcon,
   ListItemText,
   Stack,
-  // Typography,
   IconButton,
   ListItem,
 } from '@mui/material';
 
 import {
-  AccountCircle,
   Dashboard,
   Announcement,
   Close,
@@ -22,29 +20,32 @@ import {
   Quiz,
 } from '@mui/icons-material';
 
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
+
+import logo from '../../../assets/logo.png';
 
 export default function DrawerContent({ handleClose }) {
   const navigate = useNavigate();
+  const location = useLocation();
   const listItems = [
     {
       title: 'Dashboard',
-      link: '/student/dashboard',
+      link: '/teacher/dashboard',
       icon: <Dashboard />,
     },
     {
       title: 'Announcements',
-      link: '/student/announcements',
+      link: '/teacher/announcements',
       icon: <Announcement />,
     },
     {
       title: 'Exams',
-      link: '/student/exams',
+      link: '/teacher/exams',
       icon: <Quiz />,
     },
     {
       title: 'Profile',
-      link: '/student/profile',
+      link: '/teacher/profile',
       icon: <Person />,
     },
   ];
@@ -58,14 +59,14 @@ export default function DrawerContent({ handleClose }) {
       <List sx={{ py: 0 }}>
         <ListItem sx={{ minHeight: '40px' }}>
           <ListItemIcon className="flex items-center">
-            <ListItemIcon><AccountCircle className="w-9 h-9" /></ListItemIcon>
-            <ListItemText primary="Teacher" primaryTypographyProps={{ className: 'font-extrabold text-2xl' }} />
+            <ListItemIcon><img src={logo} alt="hts" className="w-9 h-9" /></ListItemIcon>
+            <ListItemText primary="HTS" primaryTypographyProps={{ className: 'font-extrabold text-2xl' }} />
           </ListItemIcon>
         </ListItem>
         <Divider orientation="horizontal" />
         {
           listItems.map((item) => (
-            <ListItemButton onClick={() => navigate(item.link)}>
+            <ListItemButton key={item.title} className={`${location.pathname === item.link && 'bg-blue-100'}`} onClick={() => navigate(item.link)}>
               <ListItemIcon>{item.icon}</ListItemIcon>
               <ListItemText primary={item.title} />
             </ListItemButton>

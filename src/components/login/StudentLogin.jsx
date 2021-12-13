@@ -13,7 +13,7 @@ import { useNavigate } from 'react-router-dom';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 
-import logo from '../../assests/logo.png';
+import logo from '../../assets/logo.png';
 
 export default function StudentLogin() {
   const navigate = useNavigate();
