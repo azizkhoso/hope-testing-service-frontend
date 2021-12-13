@@ -9,7 +9,6 @@ import {
   ListItemText,
   Stack,
   IconButton,
-  ListItem,
 } from '@mui/material';
 
 import {
@@ -50,23 +49,18 @@ export default function DrawerContent({ handleClose }) {
     },
   ];
   return (
-    <Stack sx={{ width: '220px' }}>
+    <Stack sx={{ width: '100%' }}>
       <span className="flex justify-end md:hidden">
         <IconButton onClick={() => handleClose()}>
           <Close />
         </IconButton>
       </span>
+      <img src={logo} alt="hts" className="self-center w-40 my-3" />
       <List sx={{ py: 0 }}>
-        <ListItem sx={{ minHeight: '40px' }}>
-          <ListItemIcon className="flex items-center">
-            <ListItemIcon><img src={logo} alt="hts" className="w-9 h-9" /></ListItemIcon>
-            <ListItemText primary="HTS" primaryTypographyProps={{ className: 'font-extrabold text-2xl' }} />
-          </ListItemIcon>
-        </ListItem>
         <Divider orientation="horizontal" />
         {
           listItems.map((item) => (
-            <ListItemButton key={item.title} className={`${location.pathname === item.link && 'bg-blue-100'}`} onClick={() => navigate(item.link)}>
+            <ListItemButton key={item.title} className={`${location.pathname.startsWith(item.link) && 'bg-blue-100'}`} onClick={() => navigate(item.link)}>
               <ListItemIcon>{item.icon}</ListItemIcon>
               <ListItemText primary={item.title} />
             </ListItemButton>

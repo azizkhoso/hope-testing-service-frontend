@@ -21,9 +21,9 @@ export default function Student() {
   const { account } = useSelector((s) => s);
   if (!account.student) return <Navigate replace to="/login/student" />;
   return (
-    <div className="flex">
+    <div className="flex flex-col md:flex-row">
       <Sidebar open={openDrawer} setOpen={setOpenDrawer} />
-      <section className="flex-grow">
+      <section className="flex-grow md:w-9/12 lg:w-9/12 2xl:w-10/12">
         <div className={`flex ${openDrawer ? 'justify-between' : 'justify-end'} w-full py-2 px-4 border-b`} style={{ minHeight: '40px' }}>
           <IconButton className="block md:hidden" onClick={() => setOpenDrawer(true)}>
             <Menu />

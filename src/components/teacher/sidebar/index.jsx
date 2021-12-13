@@ -9,9 +9,11 @@ import DrawerContent from './DrawerContent';
 export default function Sidebar({ open, setOpen }) {
   return (
     <>
-      <div className="hidden md:block" style={{ width: '220px' }}>
+      <div className="hidden md:block md:w-3/12 lg:w-3/12 2xl:w-2/12">
         <Drawer
           variant="permanent"
+          sx={{ width: '100%' }}
+          classes={{ paper: 'md:w-3/12 lg:w-3/12 2xl:w-2/12' }}
         >
           <DrawerContent />
         </Drawer>
