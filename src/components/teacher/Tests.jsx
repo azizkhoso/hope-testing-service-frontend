@@ -25,7 +25,7 @@ import {
   Add,
 } from '@mui/icons-material';
 
-import NewTest from './NewTest';
+import NewTest from './newTest';
 
 export default function Tests() {
   const navigate = useNavigate();

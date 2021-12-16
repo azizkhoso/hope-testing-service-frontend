@@ -22,8 +22,10 @@ import * as yup from 'yup';
 
 import NewMCQSDialog from './NewMCQSDialog';
 import NewBlankDialog from './NewBlankDialog';
+import NewTrueFalseDialog from './NewTrueFalseDialog';
 import UpdateMCQSDialog from './UpdateMCQSDialog';
 import UpdateBlankDialog from './UpdateBlankDialog';
+import UpdateTrueFalseDialog from './UpdateTrueFalseDialog';
 
 export default function NewTest() {
   const [anchorEl, setAnchoEl] = React.useState(null);
@@ -55,14 +57,19 @@ export default function NewTest() {
   const [toBeUpdatedQuestion, setToBeUpdatedQuestion] = React.useState(null);
   const [isOpenMCQS, setOpenMCQS] = React.useState(false);
   const [isOpenBlank, setOpenBlank] = React.useState(false);
+  const [isOpenTrueFalse, setOpenTrueFalse] = React.useState(false);
   const [isOpenUpdateMCQS, setOpenUpdateMCQS] = React.useState(false);
   const [isOpenUpdateBlank, setOpenUpdateBlank] = React.useState(false);
+  const [isOpenUpdateTrueFalse, setOpenUpdateTrueFalse] = React.useState(false);
   function openDialog(dialog) {
     if (dialog === 'MCQS') {
       setOpenMCQS(true);
       setAnchoEl(null);
     } else if (dialog === 'Blank') {
       setOpenBlank(true);
+      setAnchoEl(null);
+    } else if (dialog === 'TrueFalse') {
+      setOpenTrueFalse(true);
       setAnchoEl(null);
     }
   }
@@ -71,6 +78,8 @@ export default function NewTest() {
       setOpenUpdateMCQS(true);
     } else if (dialogType === 'Blank') {
       setOpenUpdateBlank(true);
+    } else if (dialogType === 'TrueFalse') {
+      setOpenUpdateTrueFalse(true);
     }
   }
   function updateQuestion(question) {
@@ -220,6 +229,21 @@ export default function NewTest() {
           />
         )
       }
+      <NewTrueFalseDialog
+        open={isOpenTrueFalse}
+        handleClose={() => setOpenTrueFalse(false)}
+        handleSubmit={(q) => formik.setFieldValue('questions', [...formik.values.questions, q])}
+      />
+      {
+        toBeUpdatedQuestion && (
+          <UpdateTrueFalseDialog
+            question={toBeUpdatedQuestion}
+            open={isOpenUpdateTrueFalse}
+            handleClose={() => { setOpenUpdateTrueFalse(false); setToBeUpdatedQuestion(null); }}
+            handleSubmit={(q) => updateQuestion(q)}
+          />
+        )
+      }
       <div className={`flex flex-col gap-3 p-3 lg:w-11/12 border rounded-xl ${formik.touched.questions && formik.errors.questions && 'border-red-500'}`}>
         <div className="flex items-center justify-between">
           <Typography variant="h6" color="primary">Questions</Typography>
@@ -246,6 +270,7 @@ export default function NewTest() {
           >
             <MenuItem disableRipple onClick={() => openDialog('MCQS')}>MCQS</MenuItem>
             <MenuItem disableRipple onClick={() => openDialog('Blank')}>Blank</MenuItem>
+            <MenuItem disableRipple onClick={() => openDialog('TrueFalse')}>True/False</MenuItem>
           </Menu>
         </div>
         {
