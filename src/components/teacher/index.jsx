@@ -15,7 +15,7 @@ import {
 import { useSelector } from 'react-redux';
 
 import Sidebar from './sidebar';
-import Exams from './exams';
+import Tests from './Tests';
 
 export default function Teacher() {
   const [openDrawer, setOpenDrawer] = React.useState(false);
@@ -40,7 +40,7 @@ export default function Teacher() {
             <Route path="/dashboard" element={<h1>Teacher dashboard</h1>} />
             <Route path="/announcements" element={<h1>Teacher Announcements</h1>} />
             <Route path="/profile" element={<h1>Teacher profile</h1>} />
-            <Route path="/exams/*" element={<Exams />} />
+            <Route path="/tests/*" element={<Tests />} />
           </Routes>
         </div>
       </section>

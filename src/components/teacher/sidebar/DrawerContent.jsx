@@ -38,8 +38,8 @@ export default function DrawerContent({ handleClose }) {
       icon: <Announcement />,
     },
     {
-      title: 'Exams',
-      link: '/teacher/exams',
+      title: 'Tests',
+      link: '/teacher/tests',
       icon: <Quiz />,
     },
     {

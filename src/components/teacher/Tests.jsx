@@ -25,14 +25,15 @@ import {
   Add,
 } from '@mui/icons-material';
 
-export default function Exams() {
+import NewTest from './NewTest';
+
+export default function Tests() {
   const navigate = useNavigate();
-  const [exams, setExams] = React.useState([
+  const [tests, setTests] = React.useState([
     {
       id: 'e1',
       title: 'English Test 1',
       subject: 'English',
-      type: 'MCQS',
       duration: 180, // seconds
       startsAt: Number(new Date()) + 10000000000,
       qualification: 'IX',
@@ -49,16 +50,15 @@ export default function Exams() {
         element={(
           <div className="flex flex-col w-full h-full gap-6">
             <div className="flex justify-end w-full">
-              <Button variant="contained" startIcon={<Add />} onClick={() => navigate('new-exam')}>New Exam</Button>
+              <Button variant="contained" startIcon={<Add />} onClick={() => navigate('new-test')}>New Test</Button>
             </div>
-            <Typography variant="h6" align="center">Exams</Typography>
+            <Typography variant="h6" align="center">Tests</Typography>
             <TableContainer className="w-full" component={Card}>
               <Table>
                 <TableHead>
                   <TableRow>
                     <TableCell>Sr. No.</TableCell>
-                    <TableCell>Exam Title</TableCell>
-                    <TableCell align="center">Type</TableCell>
+                    <TableCell>Test Title</TableCell>
                     <TableCell align="center">Subject</TableCell>
                     <TableCell align="center">Starts At</TableCell>
                     <TableCell align="center">Qualification</TableCell>
@@ -67,14 +67,13 @@ export default function Exams() {
                 </TableHead>
                 <TableBody>
                   {
-                    exams.map((exam, index) => (
-                      <TableRow key={exam.id}>
+                    tests.map((test, index) => (
+                      <TableRow key={test.id}>
                         <TableCell>{index}</TableCell>
-                        <TableCell>{exam.title}</TableCell>
-                        <TableCell align="center">{exam.type}</TableCell>
-                        <TableCell align="center">{exam.subject}</TableCell>
-                        <TableCell align="center" style={{ minWidth: '100px' }}>{(new Date(exam.startsAt)).toDateString()}</TableCell>
-                        <TableCell align="center">{exam.qualification}</TableCell>
+                        <TableCell>{test.title}</TableCell>
+                        <TableCell align="center">{test.subject}</TableCell>
+                        <TableCell align="center" style={{ minWidth: '100px' }}>{(new Date(test.startsAt)).toDateString()}</TableCell>
+                        <TableCell align="center">{test.qualification}</TableCell>
                         <TableCell align="center">
                           <IconButton>
                             <Edit />
@@ -92,8 +91,8 @@ export default function Exams() {
           </div>
         )}
       />
-      <Route path="/new-exam" setExams={setExams} element={<h1>New exam</h1>} />
-      <Route path="/:id" element={<h1>View Exam</h1>} />
+      <Route path="/new-test" setTests={setTests} element={<NewTest />} />
+      <Route path="/:id" element={<h1>View Test</h1>} />
     </Routes>
   );
 }
