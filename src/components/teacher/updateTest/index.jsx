@@ -1,5 +1,7 @@
+/* eslint-disable react/forbid-prop-types */
 /* eslint-disable react/jsx-props-no-spreading */
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import {
   Typography,
@@ -29,7 +31,7 @@ import {
   UpdateTrueFalseDialog,
 } from '../questionDialogs';
 
-export default function NewTest() {
+export default function UpdateTest({ test }) {
   const [anchorEl, setAnchoEl] = React.useState(null);
   const open = Boolean(anchorEl);
   function handleMenuOpen(e) {
@@ -47,11 +49,7 @@ export default function NewTest() {
   });
   const formik = useFormik({
     initialValues: {
-      title: '',
-      subject: 'English',
-      startsAt: new Date(),
-      qualification: 'XI',
-      questions: [],
+      ...test,
     },
     validationSchema: schema,
     onSubmit: (values) => console.log(values),
@@ -332,3 +330,7 @@ export default function NewTest() {
     </form>
   );
 }
+
+UpdateTest.propTypes = {
+  test: PropTypes.object.isRequired,
+};

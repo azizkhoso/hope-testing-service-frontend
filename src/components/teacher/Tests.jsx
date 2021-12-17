@@ -26,6 +26,7 @@ import {
 } from '@mui/icons-material';
 
 import NewTest from './newTest';
+import UpdateTest from './updateTest';
 
 export default function Tests() {
   const navigate = useNavigate();
@@ -36,11 +37,12 @@ export default function Tests() {
       subject: 'English',
       duration: 180, // seconds
       startsAt: Number(new Date()) + 10000000000,
-      qualification: 'IX',
+      qualification: 'XI',
       teacher: {
         id: 't1',
         name: 'Teacher 1',
       },
+      questions: [],
     },
   ]);
   return (
@@ -75,7 +77,7 @@ export default function Tests() {
                         <TableCell align="center" style={{ minWidth: '100px' }}>{(new Date(test.startsAt)).toDateString()}</TableCell>
                         <TableCell align="center">{test.qualification}</TableCell>
                         <TableCell align="center">
-                          <IconButton>
+                          <IconButton onClick={() => navigate(`update/${test.id}`)}>
                             <Edit />
                           </IconButton>
                           <IconButton>
@@ -91,7 +93,8 @@ export default function Tests() {
           </div>
         )}
       />
-      <Route path="/new-test" setTests={setTests} element={<NewTest />} />
+      <Route path="/new" setTests={setTests} element={<NewTest />} />
+      <Route path="/update/:id" setTests={setTests} element={<UpdateTest test={tests[0]} />} />
       <Route path="/:id" element={<h1>View Test</h1>} />
     </Routes>
   );

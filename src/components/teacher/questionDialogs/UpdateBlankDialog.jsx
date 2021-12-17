@@ -75,7 +75,7 @@ export default function UpdateBlankDialog({
                       URL.createObjectURL(imgRef.current.files[0])
                     )
                   )
-                )) || URL.createObjectURL(question.image)}
+                )) || (typeof question.image === 'object' ? URL.createObjectURL(question.image) : question.image)}
                 alt="preview"
               />
               <input

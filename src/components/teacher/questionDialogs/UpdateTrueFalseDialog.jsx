@@ -8,10 +8,10 @@ import {
   DialogContent,
   Stack,
   TextField,
+  Button,
   Typography,
   Select,
   MenuItem,
-  Button,
 } from '@mui/material';
 
 import {
@@ -21,8 +21,8 @@ import {
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 
-export default function UpdateMCQSDialog({
-  question, open, handleClose, handleSubmit,
+export default function NewTrueFalseDialog({
+  open, handleClose, handleSubmit, question,
 }) {
   const imgRef = React.useRef();
   const schema = yup.object({
@@ -31,11 +31,7 @@ export default function UpdateMCQSDialog({
       if (!value) return true;
       return value.size <= 30000;
     }),
-    A: yup.string().required('Option A is required'),
-    B: yup.string().required('Option B is required'),
-    C: yup.string().required('Option C is required'),
-    D: yup.string().required('Option D is required'),
-    answer: yup.string().required('Correct Option is required'),
+    answer: yup.string().required('Answer is required'),
     duration: yup.number().required('Duration is required').min(5, 'At least 5 seconds should be given').max(180, 'At most 3 minutes (180s) should be given'),
   });
   const formik = useFormik({
@@ -45,12 +41,10 @@ export default function UpdateMCQSDialog({
     validationSchema: schema,
     onSubmit: (values) => {
       formik.resetForm();
-      handleSubmit({ ...values, id: question.id });
+      handleSubmit({ ...values });
       handleClose();
     },
   });
-  // Rest form when component is unmount
-  React.useEffect(() => formik.resetForm(), []);
   return (
     <Dialog
       open={open}
@@ -60,7 +54,7 @@ export default function UpdateMCQSDialog({
       }}
     >
       <form onSubmit={formik.handleSubmit} className="flex flex-col w-full">
-        <DialogTitle className="text-center">New MCQS Question</DialogTitle>
+        <DialogTitle className="text-center">New True/False Question</DialogTitle>
         <DialogContent style={{ paddingTop: '0.5rem' }}>
           <Stack spacing={1}>
             <TextField
@@ -71,21 +65,19 @@ export default function UpdateMCQSDialog({
               label="Question Statement"
               fullWidth
               value={formik.values.statement}
-              error={formik.touched.statement && formik.errors.statement}
+              error={formik.touched.statement && Boolean(formik.errors.statement)}
               helperText={formik.touched && formik.errors.statement}
             />
             <div className={`${formik.errors.image ? 'border-red-500' : ''} flex flex-col w-full border rounded-lg`}>
               <img
-                className="w-full"
-                src={(
-                  imgRef && (
-                    imgRef.current && (
-                      imgRef.current.files[0] && (
-                        URL.createObjectURL(imgRef.current.files[0])
-                      )
+                className="self-center w-full max-w-xs"
+                src={(imgRef && (
+                  imgRef.current && (
+                    imgRef.current.files[0] && (
+                      URL.createObjectURL(imgRef.current.files[0])
                     )
                   )
-                ) || URL.createObjectURL(question.image)}
+                )) || (typeof question.image === 'object' ? URL.createObjectURL(question.image) : question.image)}
                 alt="preview"
               />
               <input
@@ -96,61 +88,9 @@ export default function UpdateMCQSDialog({
               />
               {formik.errors.image && <small className="text-red-500">{formik.errors.image}</small>}
             </div>
-            <div className="flex items-center gap-3">
-              <Typography variant="h6">A.</Typography>
-              <TextField
-                variant="outlined"
-                onChange={formik.handleChange}
-                size="small"
-                name="A"
-                className="flex-grow"
-                value={formik.values.A}
-                error={formik.touched.A && formik.errors.A}
-                helperText={formik.touched.A && formik.errors.A}
-              />
-            </div>
-            <div className="flex items-center gap-3">
-              <Typography variant="h6">B.</Typography>
-              <TextField
-                variant="outlined"
-                onChange={formik.handleChange}
-                size="small"
-                name="B"
-                className="flex-grow"
-                value={formik.values.B}
-                error={formik.touched.B && formik.errors.B}
-                helperText={formik.touched.B && formik.errors.B}
-              />
-            </div>
-            <div className="flex items-center gap-3">
-              <Typography variant="h6">C.</Typography>
-              <TextField
-                variant="outlined"
-                onChange={formik.handleChange}
-                size="small"
-                name="C"
-                className="flex-grow"
-                value={formik.values.C}
-                error={formik.touched.C && formik.errors.C}
-                helperText={formik.touched.C && formik.errors.C}
-              />
-            </div>
-            <div className="flex items-center gap-3">
-              <Typography variant="h6">D.</Typography>
-              <TextField
-                variant="outlined"
-                onChange={formik.handleChange}
-                size="small"
-                name="D"
-                className="flex-grow"
-                value={formik.values.D}
-                error={formik.touched.D && formik.errors.D}
-                helperText={formik.touched.D && formik.errors.D}
-              />
-            </div>
             <div className="flex flex-col items-center gap-3 md:flex-row">
               <div className="flex items-stretch w-full gap-1 md:w-auto">
-                <Typography variant="h6">Correct Option:</Typography>
+                <Typography variant="h6">Answer:</Typography>
                 <Select
                   variant="outlined"
                   className="self-center flex-grow md:flex-grow-0"
@@ -160,10 +100,8 @@ export default function UpdateMCQSDialog({
                   value={formik.values.answer}
                   error={formik.touched.answer && formik.errors.answer}
                 >
-                  <MenuItem value="A">A</MenuItem>
-                  <MenuItem value="B">B</MenuItem>
-                  <MenuItem value="C">C</MenuItem>
-                  <MenuItem value="D">D</MenuItem>
+                  <MenuItem value="True">True</MenuItem>
+                  <MenuItem value="False">False</MenuItem>
                 </Select>
               </div>
               <span className="flex-grow hidden md:block" />
@@ -195,7 +133,7 @@ export default function UpdateMCQSDialog({
   );
 }
 
-UpdateMCQSDialog.propTypes = {
+NewTrueFalseDialog.propTypes = {
   question: PropTypes.object.isRequired,
   open: PropTypes.bool.isRequired,
   handleClose: PropTypes.func.isRequired,
