@@ -37,6 +37,8 @@ export default function Admin() {
           <Route index element={<Navigate replace to="dashboard" />} />
           <Route path="/dashboard" element={<h1>Admin dashboard</h1>} />
           <Route path="/announcements" element={<h1>Admin Announcements</h1>} />
+          <Route path="/students" element={<h1>Admin Students</h1>} />
+          <Route path="/teachers" element={<h1>Admin Teachers</h1>} />
           <Route path="/profile" element={<h1>Admin profile</h1>} />
           <Route path="/tests" element={<h1>Admin tests</h1>} />
         </Routes>
