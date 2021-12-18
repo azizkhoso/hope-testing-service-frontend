@@ -15,6 +15,7 @@ import {
 import { useSelector } from 'react-redux';
 
 import Sidebar from './sidebar';
+import Tests from './Test';
 
 export default function Admin() {
   const [openDrawer, setOpenDrawer] = React.useState(false);
@@ -33,15 +34,17 @@ export default function Admin() {
             <Logout />
           </IconButton>
         </div>
-        <Routes>
-          <Route index element={<Navigate replace to="dashboard" />} />
-          <Route path="/dashboard" element={<h1>Admin dashboard</h1>} />
-          <Route path="/announcements" element={<h1>Admin Announcements</h1>} />
-          <Route path="/students" element={<h1>Admin Students</h1>} />
-          <Route path="/teachers" element={<h1>Admin Teachers</h1>} />
-          <Route path="/profile" element={<h1>Admin profile</h1>} />
-          <Route path="/tests" element={<h1>Admin tests</h1>} />
-        </Routes>
+        <div className="block p-3">
+          <Routes>
+            <Route index element={<Navigate replace to="dashboard" />} />
+            <Route path="/dashboard" element={<h1>Admin dashboard</h1>} />
+            <Route path="/announcements" element={<h1>Admin Announcements</h1>} />
+            <Route path="/students" element={<h1>Admin Students</h1>} />
+            <Route path="/teachers" element={<h1>Admin Teachers</h1>} />
+            <Route path="/profile" element={<h1>Admin profile</h1>} />
+            <Route path="/tests/*" element={<Tests />} />
+          </Routes>
+        </div>
       </section>
     </div>
   );
