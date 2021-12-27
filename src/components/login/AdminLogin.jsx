@@ -6,14 +6,33 @@ import {
   Button,
   Typography,
   TextField,
+  CircularProgress,
 } from '@mui/material';
+
+import {
+  useMutation,
+} from 'react-query';
 
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 
+import { useNavigate } from 'react-router-dom';
+
+import { useSelector, useDispatch } from 'react-redux';
+import { login } from '../../redux/actions/account';
+
+import { loginAdmin } from '../../api/login';
+
 import logo from '../../assets/logo.png';
 
 export default function AdminLogin() {
+  const { account } = useSelector((state) => state);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  if (account.admin) navigate('/admin');
+  const {
+    isLoading, data, isPaused, isSuccess, mutate,
+  } = useMutation((values) => loginAdmin(values));
   // Form requirements
   const schema = yup.object({
     email: yup.string().required('Email is required').email('Enter a valid email'),
@@ -25,9 +44,12 @@ export default function AdminLogin() {
       password: '',
     },
     validationSchema: schema,
-    onSubmit: (values) => console.log(values),
+    onSubmit: (values) => mutate(values),
   });
   // -----------------
+  React.useEffect(() => {
+    if (isSuccess) dispatch(login(data.data));
+  }, [isSuccess, isPaused]);
   return (
     <Card elevation={3} className="w-full py-6 my-6">
       <Stack spacing={2}>
@@ -55,7 +77,13 @@ export default function AdminLogin() {
             error={formik.touched.password && formik.errors.password}
             helperText={formik.touched.password && formik.errors.password}
           />
-          <Button type="submit" variant="contained">Login as an Admin</Button>
+          <Button type="submit" disabled={isLoading} variant="contained">
+            {
+              isLoading
+                ? <CircularProgress />
+                : 'Login as Admin'
+            }
+          </Button>
         </Stack>
       </Stack>
     </Card>

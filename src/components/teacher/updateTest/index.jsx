@@ -325,7 +325,7 @@ export default function UpdateTest({ test }) {
       </div>
       {formik.touched.questions && formik.errors.questions && <small className="-mt-5 text-red-500">{formik.errors.questions}</small>}
       <div className="flex items-center justify-center">
-        <Button variant="contained" type="submit">Create Test</Button>
+        <Button variant="contained" type="submit">Update Test</Button>
       </div>
     </form>
   );
