@@ -18,6 +18,7 @@ import Teacher from '../teacher';
 import Admin from '../admin';
 import NotFound from '../NotFound';
 import SignUp from '../signup';
+import Toasts from '../toasts';
 
 const queryClient = new QueryClient();
 export default function AppRoutes() {
@@ -36,6 +37,7 @@ export default function AppRoutes() {
             <Route path="*" element={<Navigate replace to="/not-found" />} />
           </Routes>
         </div>
+        <Toasts />
       </BrowserRouter>
       <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>

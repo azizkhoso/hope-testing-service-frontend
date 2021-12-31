@@ -24,15 +24,20 @@ import { login } from '../../redux/actions/account';
 import { loginAdmin } from '../../api/login';
 
 import logo from '../../assets/logo.png';
+import { addErrorToast } from '../../redux/actions/toasts';
 
 export default function AdminLogin() {
   const { account } = useSelector((state) => state);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   if (account.admin) navigate('/admin');
-  const {
-    isLoading, data, isPaused, isSuccess, mutate,
-  } = useMutation((values) => loginAdmin(values));
+  const { isLoading, mutate } = useMutation(
+    (values) => loginAdmin(values),
+    {
+      onSuccess: ({ data }) => dispatch(login(data)),
+      onError: ({ response }) => dispatch(addErrorToast({ message: response.data.error })),
+    },
+  );
   // Form requirements
   const schema = yup.object({
     email: yup.string().required('Email is required').email('Enter a valid email'),
@@ -47,9 +52,6 @@ export default function AdminLogin() {
     onSubmit: (values) => mutate(values),
   });
   // -----------------
-  React.useEffect(() => {
-    if (isSuccess) dispatch(login(data.data));
-  }, [isSuccess, isPaused]);
   return (
     <Card elevation={3} className="w-full py-6 my-6">
       <Stack spacing={2}>
