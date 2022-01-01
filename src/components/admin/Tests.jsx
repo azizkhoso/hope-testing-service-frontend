@@ -17,6 +17,7 @@ import {
   TableHead,
   TableRow,
   Typography,
+  CircularProgress,
 } from '@mui/material';
 
 import {
@@ -25,11 +26,18 @@ import {
   Add,
 } from '@mui/icons-material';
 
+import { useQuery } from 'react-query';
+
+import { useDispatch } from 'react-redux';
+import { getTests } from '../../api/admin';
+import { addErrorToast } from '../../redux/actions/toasts';
+
 import NewTest from '../teacher/newTest';
 import UpdateTest from '../teacher/updateTest';
 
 export default function Tests() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [tests, setTests] = React.useState([
     {
       id: 'e1',
@@ -45,6 +53,13 @@ export default function Tests() {
       questions: [],
     },
   ]);
+  const { isLoading } = useQuery('tests', getTests, {
+    onSuccess: ({ data }) => setTests(data.tests),
+    onError: (err) => dispatch(
+      addErrorToast({ message: err.response?.data?.error || err.message }),
+    ),
+  });
+  if (isLoading) return <div className="relative inset-0 flex items-center justify-center w-full h-full"><CircularProgress /></div>;
   return (
     <Routes>
       <Route

@@ -15,7 +15,7 @@ import {
 import { useSelector } from 'react-redux';
 
 import Sidebar from './sidebar';
-import Tests from './Test';
+import Tests from './Tests';
 import Students from './Students';
 import Teachers from './Teachers';
 

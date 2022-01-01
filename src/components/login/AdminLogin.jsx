@@ -35,7 +35,9 @@ export default function AdminLogin() {
     (values) => loginAdmin(values),
     {
       onSuccess: ({ data }) => dispatch(login(data)),
-      onError: ({ response }) => dispatch(addErrorToast({ message: response.data.error })),
+      onError: (err) => dispatch(
+        addErrorToast({ message: err.response?.data?.error || err.message }),
+      ),
     },
   );
   // Form requirements
