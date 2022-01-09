@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 /* eslint-disable no-continue */
 /* eslint-disable no-restricted-syntax */
 import axios from 'axios';
@@ -25,6 +26,10 @@ export function newTest(data) {
       'Content-Type': 'multipart/form-data',
     },
   });
+}
+
+export function deleteTest(_id) {
+  return admin.delete(`/tests/${_id}`);
 }
 
 export default admin;
