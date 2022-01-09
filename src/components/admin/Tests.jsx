@@ -26,6 +26,8 @@ import {
   Add,
 } from '@mui/icons-material';
 
+import date from 'date-and-time';
+
 import { useQuery } from 'react-query';
 
 import { useDispatch } from 'react-redux';
@@ -89,7 +91,9 @@ export default function Tests() {
                         <TableCell>{index}</TableCell>
                         <TableCell>{test.title}</TableCell>
                         <TableCell align="center">{test.subject}</TableCell>
-                        <TableCell align="center" style={{ minWidth: '100px' }}>{(new Date(test.startsAt)).toDateString()}</TableCell>
+                        <TableCell align="center" style={{ minWidth: '100px' }}>
+                          {date.format(new Date(test.startsAt), 'DD-MMM-YYYY hh:mm')}
+                        </TableCell>
                         <TableCell align="center">{test.qualification}</TableCell>
                         <TableCell align="center">
                           <IconButton onClick={() => navigate(`update/${test.id}`)}>

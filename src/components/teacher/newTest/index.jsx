@@ -11,14 +11,24 @@ import {
   Stack,
   Card,
   IconButton,
+  Switch,
+  CircularProgress,
 } from '@mui/material';
 
 import {
   Add, Delete, Edit,
 } from '@mui/icons-material';
 
+import { useNavigate } from 'react-router-dom';
+
 import { useFormik } from 'formik';
 import * as yup from 'yup';
+
+import { useDispatch } from 'react-redux';
+
+import { useMutation } from 'react-query';
+import { addErrorToast, addSuccessToast } from '../../../redux/actions/toasts';
+import { newTest } from '../../../api/admin';
 
 import {
   NewMCQSDialog,
@@ -31,6 +41,8 @@ import {
 
 export default function NewTest() {
   const [anchorEl, setAnchoEl] = React.useState(null);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const open = Boolean(anchorEl);
   function handleMenuOpen(e) {
     setAnchoEl(e.currentTarget);
@@ -38,10 +50,24 @@ export default function NewTest() {
   function handleMenuClose() {
     setAnchoEl(null);
   }
+  const { isLoading, mutate } = useMutation(
+    (values) => newTest(values),
+    {
+      onSuccess: () => {
+        dispatch(addSuccessToast({ message: 'Test created successfully' }));
+        navigate('../../tests');
+      },
+      onError: (err) => dispatch(addErrorToast(
+        { message: err?.response?.data.error || err.message },
+      )),
+    },
+  );
   const schema = yup.object({
     title: yup.string().required('Title is required').min(4, 'Enter at least 4 characters'),
     subject: yup.string().required('Subject is required'),
     startsAt: yup.date().min(new Date(), 'Test cannot be hold in past time'),
+    submittableBefore: yup.date().min(new Date(), 'Test cannot be uploaded after end time').required('End time is required'),
+    isDemo: yup.bool(),
     qualification: yup.string().required('Qualification is required').oneOf(['XI', 'XII', 'Bachelor', 'Masters'], 'Not a valid qualification'),
     questions: yup.array().min(3, 'The test should have at least 3 questions'),
   });
@@ -50,11 +76,13 @@ export default function NewTest() {
       title: '',
       subject: 'English',
       startsAt: new Date(),
+      submittableBefore: new Date(),
+      isDemo: false,
       qualification: 'XI',
       questions: [],
     },
     validationSchema: schema,
-    onSubmit: (values) => console.log(values),
+    onSubmit: (values) => mutate(values),
   });
   const [toBeUpdatedQuestion, setToBeUpdatedQuestion] = React.useState(null);
   const [isOpenMCQS, setOpenMCQS] = React.useState(false);
@@ -87,9 +115,9 @@ export default function NewTest() {
   function updateQuestion(question) {
     const foundIndex = formik.values.questions.findIndex((q) => q.id === question.id);
     const updatedQuestions = [
-      ...formik.values.questions.splice(0, foundIndex),
+      ...formik.values.questions.slice(0, foundIndex),
       { ...question },
-      ...formik.values.questions.splice(foundIndex + 1),
+      ...formik.values.questions.slice(foundIndex + 1),
     ];
     formik.setFieldValue('questions', updatedQuestions);
   }
@@ -110,11 +138,24 @@ export default function NewTest() {
   }
   return (
     <form onSubmit={formik.handleSubmit} className="flex flex-col w-full h-full gap-6">
-      <Typography variant="h6" align="center">New Test</Typography>
+      <div className="flex justify-between w-full gap-3 lg:w-11/12">
+        <Typography variant="h6" align="center">
+          New Test
+        </Typography>
+        <div className="flex items-center justify-center">
+          <Button disabled={isLoading} variant="contained" type="submit">
+            {
+              isLoading
+                ? <CircularProgress />
+                : 'Upload'
+            }
+          </Button>
+        </div>
+      </div>
       <table>
         <tbody>
-          <tr className="flex flex-col justify-between w-full md:w-2/3 lg:w-1/2 2xl:w-2/6 md:flex-row">
-            <td className="w-24"><Typography variant="h6" color="primary">Title</Typography></td>
+          <tr className="flex flex-col justify-between w-full lg:w-2/3 2xl:w-2/6 md:flex-row">
+            <td className="min-w-fit"><Typography variant="h6" color="primary">Title</Typography></td>
             <td>
               <TextField
                 variant="outlined"
@@ -129,8 +170,8 @@ export default function NewTest() {
               />
             </td>
           </tr>
-          <tr className="flex flex-col justify-between w-full md:w-2/3 lg:w-1/2 2xl:w-2/6 md:flex-row">
-            <td className="w-24"><Typography variant="h6" color="primary">Subject</Typography></td>
+          <tr className="flex flex-col justify-between w-full lg:w-2/3 2xl:w-2/6 md:flex-row">
+            <td className="min-w-fit"><Typography variant="h6" color="primary">Subject</Typography></td>
             <td>
               <Select
                 variant="outlined"
@@ -151,8 +192,8 @@ export default function NewTest() {
               </Select>
             </td>
           </tr>
-          <tr className="flex flex-col justify-between w-full md:w-2/3 lg:w-1/2 2xl:w-2/6 md:flex-row">
-            <td className="w-24"><Typography variant="h6" color="primary">Starts at</Typography></td>
+          <tr className="flex flex-col justify-between w-full lg:w-2/3 2xl:w-2/6 md:flex-row">
+            <td className="min-w-fit"><Typography variant="h6" color="primary">Starts at</Typography></td>
             <td>
               <TextField
                 type="datetime-local"
@@ -168,8 +209,40 @@ export default function NewTest() {
               />
             </td>
           </tr>
-          <tr className="flex flex-col justify-between w-full md:w-2/3 lg:w-1/2 2xl:w-2/6 md:flex-row">
-            <td className="w-24"><Typography variant="h6" color="primary">Qualification</Typography></td>
+          <tr className="flex flex-col justify-between w-full lg:w-2/3 2xl:w-2/6 md:flex-row">
+            <td className="min-w-fit"><Typography variant="h6" color="primary">Submittable Before</Typography></td>
+            <td>
+              <TextField
+                type="datetime-local"
+                variant="outlined"
+                placeholder="Title"
+                size="small"
+                className="w-full sm:w-60"
+                name="submittableBefore"
+                onChange={formik.handleChange}
+                value={formik.values.submittableBefore}
+                error={formik.touched.submittableBefore && formik.errors.submittableBefore}
+                helperText={formik.touched && formik.errors.submittableBefore}
+              />
+            </td>
+          </tr>
+          <tr className="flex flex-col justify-between w-full lg:w-2/3 2xl:w-2/6 md:flex-row">
+            <td className="min-w-fit"><Typography variant="h6" color="primary">Is demo:</Typography></td>
+            <td className="flex justify-start w-full sm:w-60">
+              <Switch
+                size="small"
+                className="w-10"
+                name="isDemo"
+                checked={formik.values.isDemo}
+                onChange={formik.handleChange}
+                value={formik.values.isDemo}
+                error={formik.touched.isDemo && formik.errors.isDemo}
+                helperText={formik.touched && formik.errors.isDemo}
+              />
+            </td>
+          </tr>
+          <tr className="flex flex-col justify-between w-full lg:w-2/3 2xl:w-2/6 md:flex-row">
+            <td className="min-w-fit"><Typography variant="h6" color="primary">Qualification</Typography></td>
             <td>
               <Select
                 variant="outlined"
@@ -189,7 +262,7 @@ export default function NewTest() {
               </Select>
             </td>
           </tr>
-          <tr className="flex flex-col justify-between w-full md:w-2/3 lg:w-1/2 2xl:w-2/6 md:flex-row">
+          <tr className="flex flex-col justify-between w-full lg:w-2/3 2xl:w-2/6 md:flex-row">
             <td>
               <Typography variant="h6" color="primary">Duration:</Typography>
             </td>
@@ -326,9 +399,6 @@ export default function NewTest() {
         }
       </div>
       {formik.touched.questions && formik.errors.questions && <small className="-mt-5 text-red-500">{formik.errors.questions}</small>}
-      <div className="flex items-center justify-center">
-        <Button variant="contained" type="submit">Create Test</Button>
-      </div>
     </form>
   );
 }
