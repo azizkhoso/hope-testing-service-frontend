@@ -11,13 +11,14 @@ import {
   Stack,
   Card,
   IconButton,
-  Switch,
   CircularProgress,
 } from '@mui/material';
 
 import {
   Add, Delete, Edit,
 } from '@mui/icons-material';
+
+import date from 'date-and-time';
 
 import { useNavigate } from 'react-router-dom';
 
@@ -67,7 +68,7 @@ export default function NewTest() {
     subject: yup.string().required('Subject is required'),
     startsAt: yup.date().min(new Date(), 'Test cannot be hold in past time'),
     submittableBefore: yup.date().min(new Date(), 'Test cannot be uploaded after end time').required('End time is required'),
-    isDemo: yup.bool(),
+    isDemo: yup.string(),
     qualification: yup.string().required('Qualification is required').oneOf(['XI', 'XII', 'Bachelor', 'Masters'], 'Not a valid qualification'),
     questions: yup.array().min(3, 'The test should have at least 3 questions'),
   });
@@ -203,7 +204,7 @@ export default function NewTest() {
                 className="w-full sm:w-60"
                 name="startsAt"
                 onChange={formik.handleChange}
-                value={formik.values.startsAt}
+                value={date.format(new Date(formik.values.startsAt), 'YYYY-MM-DDThh:mm')}
                 error={formik.touched.startsAt && formik.errors.startsAt}
                 helperText={formik.touched && formik.errors.startsAt}
               />
@@ -220,7 +221,7 @@ export default function NewTest() {
                 className="w-full sm:w-60"
                 name="submittableBefore"
                 onChange={formik.handleChange}
-                value={formik.values.submittableBefore}
+                value={date.format(new Date(formik.values.submittableBefore), 'YYYY-MM-DDThh:mm')}
                 error={formik.touched.submittableBefore && formik.errors.submittableBefore}
                 helperText={formik.touched && formik.errors.submittableBefore}
               />
@@ -229,16 +230,18 @@ export default function NewTest() {
           <tr className="flex flex-col justify-between w-full lg:w-2/3 2xl:w-2/6 md:flex-row">
             <td className="min-w-fit"><Typography variant="h6" color="primary">Is demo:</Typography></td>
             <td className="flex justify-start w-full sm:w-60">
-              <Switch
+              <Select
                 size="small"
-                className="w-10"
+                className="w-full"
                 name="isDemo"
-                checked={formik.values.isDemo}
                 onChange={formik.handleChange}
                 value={formik.values.isDemo}
                 error={formik.touched.isDemo && formik.errors.isDemo}
                 helperText={formik.touched && formik.errors.isDemo}
-              />
+              >
+                <MenuItem value="true">Yes</MenuItem>
+                <MenuItem value="false">No</MenuItem>
+              </Select>
             </td>
           </tr>
           <tr className="flex flex-col justify-between w-full lg:w-2/3 2xl:w-2/6 md:flex-row">

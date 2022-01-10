@@ -130,7 +130,7 @@ export default function Tests() {
         )}
       />
       <Route path="/new-test" setTests={setTests} element={<NewTest />} />
-      <Route path="/update/:id" setTests={setTests} element={<UpdateTest test={tests[0]} />} />
+      <Route path="/update/:_id" setTests={setTests} element={<UpdateTest />} />
       <Route path="/:id" element={<h1>View Test</h1>} />
     </Routes>
   );

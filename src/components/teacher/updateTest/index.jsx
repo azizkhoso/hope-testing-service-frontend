@@ -1,7 +1,7 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable react/forbid-prop-types */
 /* eslint-disable react/jsx-props-no-spreading */
 import React from 'react';
-import PropTypes from 'prop-types';
 
 import {
   Typography,
@@ -13,14 +13,25 @@ import {
   Stack,
   Card,
   IconButton,
+  CircularProgress,
 } from '@mui/material';
 
 import {
   Add, Delete, Edit,
 } from '@mui/icons-material';
 
+import date from 'date-and-time';
+
+import { useParams, useNavigate } from 'react-router-dom';
+
 import { useFormik } from 'formik';
 import * as yup from 'yup';
+
+import { useDispatch } from 'react-redux';
+
+import { useQuery, useMutation } from 'react-query';
+import { getTest, updateTest } from '../../../api/admin';
+import { addErrorToast, addSuccessToast } from '../../../redux/actions/toasts';
 
 import {
   NewMCQSDialog,
@@ -31,7 +42,56 @@ import {
   UpdateTrueFalseDialog,
 } from '../questionDialogs';
 
-export default function UpdateTest({ test }) {
+export default function UpdateTest() {
+  const { _id } = useParams();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const updateMutation = useMutation(
+    (values) => updateTest({ ...values, _id }),
+    {
+      onSuccess: () => {
+        dispatch(addSuccessToast({ message: 'Test updated successfully' }));
+        navigate('../../tests');
+      },
+      onError: (err) => dispatch(addErrorToast(
+        { message: err?.response?.data.error || err.message },
+      )),
+    },
+  );
+  const schema = yup.object({
+    title: yup.string().required('Title is required').min(4, 'Enter at least 4 characters'),
+    subject: yup.string().required('Subject is required'),
+    startsAt: yup.date().min(new Date(), 'Test cannot be hold in past time'),
+    submittableBefore: yup.date().min(new Date(), 'Test cannot be uploaded after end time').required('End time is required'),
+    isDemo: yup.string(),
+    qualification: yup.string().required('Qualification is required').oneOf(['XI', 'XII', 'Bachelor', 'Masters'], 'Not a valid qualification'),
+    questions: yup.array().min(3, 'The test should have at least 3 questions'),
+  });
+  const formik = useFormik({
+    initialValues: {
+      title: '',
+      subject: '',
+      startsAt: new Date(),
+      submittableBefore: new Date(),
+      isDemo: 'false',
+      qualification: '',
+      questions: [],
+    },
+    validationSchema: schema,
+    onSubmit: (values) => updateMutation.mutate(values),
+  });
+  const { isLoading } = useQuery(
+    ['test', _id],
+    () => getTest(_id),
+    {
+      onSuccess: ({ data }) => {
+        formik.setValues(data.test);
+      },
+      onError: (err) => dispatch(
+        addErrorToast({ message: err?.response?.data.error || err.message }),
+      ),
+    },
+  );
   const [anchorEl, setAnchoEl] = React.useState(null);
   const open = Boolean(anchorEl);
   function handleMenuOpen(e) {
@@ -40,20 +100,6 @@ export default function UpdateTest({ test }) {
   function handleMenuClose() {
     setAnchoEl(null);
   }
-  const schema = yup.object({
-    title: yup.string().required('Title is required').min(4, 'Enter at least 4 characters'),
-    subject: yup.string().required('Subject is required'),
-    startsAt: yup.date().min(new Date(), 'Test cannot be hold in past time'),
-    qualification: yup.string().required('Qualification is required').oneOf(['XI', 'XII', 'Bachelor', 'Masters'], 'Not a valid qualification'),
-    questions: yup.array().min(3, 'The test should have at least 3 questions'),
-  });
-  const formik = useFormik({
-    initialValues: {
-      ...test,
-    },
-    validationSchema: schema,
-    onSubmit: (values) => console.log(values),
-  });
   const [toBeUpdatedQuestion, setToBeUpdatedQuestion] = React.useState(null);
   const [isOpenMCQS, setOpenMCQS] = React.useState(false);
   const [isOpenBlank, setOpenBlank] = React.useState(false);
@@ -85,9 +131,9 @@ export default function UpdateTest({ test }) {
   function updateQuestion(question) {
     const foundIndex = formik.values.questions.findIndex((q) => q.id === question.id);
     const updatedQuestions = [
-      ...formik.values.questions.splice(0, foundIndex),
+      ...formik.values.questions.slice(0, foundIndex),
       { ...question },
-      ...formik.values.questions.splice(foundIndex + 1),
+      ...formik.values.questions.slice(foundIndex + 1),
     ];
     formik.setFieldValue('questions', updatedQuestions);
   }
@@ -106,13 +152,27 @@ export default function UpdateTest({ test }) {
     if (minutes === 0) return `${seconds} s`;
     return `${minutes} m, ${seconds} s`;
   }
+  if (isLoading) return <div className="relative inset-0 flex items-center justify-center w-full h-full"><CircularProgress /></div>;
   return (
     <form onSubmit={formik.handleSubmit} className="flex flex-col w-full h-full gap-6">
-      <Typography variant="h6" align="center">New Test</Typography>
+      <div className="flex justify-between w-full gap-3 lg:w-11/12">
+        <Typography variant="h6" align="center">
+          Update Test
+        </Typography>
+        <div className="flex items-center justify-center">
+          <Button disabled={updateMutation.isLoading} variant="contained" type="submit">
+            {
+              updateMutation.isLoading
+                ? <CircularProgress />
+                : 'Update'
+            }
+          </Button>
+        </div>
+      </div>
       <table>
         <tbody>
-          <tr className="flex flex-col justify-between w-full md:w-2/3 lg:w-1/2 2xl:w-2/6 md:flex-row">
-            <td className="w-24"><Typography variant="h6" color="primary">Title</Typography></td>
+          <tr className="flex flex-col justify-between w-full lg:w-2/3 2xl:w-2/6 md:flex-row">
+            <td className="w-min-fit"><Typography variant="h6" color="primary">Title</Typography></td>
             <td>
               <TextField
                 variant="outlined"
@@ -127,8 +187,8 @@ export default function UpdateTest({ test }) {
               />
             </td>
           </tr>
-          <tr className="flex flex-col justify-between w-full md:w-2/3 lg:w-1/2 2xl:w-2/6 md:flex-row">
-            <td className="w-24"><Typography variant="h6" color="primary">Subject</Typography></td>
+          <tr className="flex flex-col justify-between w-full lg:w-2/3 2xl:w-2/6 md:flex-row">
+            <td className="w-min-fit"><Typography variant="h6" color="primary">Subject</Typography></td>
             <td>
               <Select
                 variant="outlined"
@@ -149,8 +209,8 @@ export default function UpdateTest({ test }) {
               </Select>
             </td>
           </tr>
-          <tr className="flex flex-col justify-between w-full md:w-2/3 lg:w-1/2 2xl:w-2/6 md:flex-row">
-            <td className="w-24"><Typography variant="h6" color="primary">Starts at</Typography></td>
+          <tr className="flex flex-col justify-between w-full lg:w-2/3 2xl:w-2/6 md:flex-row">
+            <td className="w-min-fit"><Typography variant="h6" color="primary">Starts at</Typography></td>
             <td>
               <TextField
                 type="datetime-local"
@@ -160,14 +220,50 @@ export default function UpdateTest({ test }) {
                 className="w-full sm:w-60"
                 name="startsAt"
                 onChange={formik.handleChange}
-                value={formik.values.startsAt}
+                value={date.format(new Date(formik.values.startsAt), 'YYYY-MM-DDThh:mm')}
                 error={formik.touched.startsAt && formik.errors.startsAt}
                 helperText={formik.touched && formik.errors.startsAt}
               />
             </td>
           </tr>
-          <tr className="flex flex-col justify-between w-full md:w-2/3 lg:w-1/2 2xl:w-2/6 md:flex-row">
-            <td className="w-24"><Typography variant="h6" color="primary">Qualification</Typography></td>
+          <tr className="flex flex-col justify-between w-full lg:w-2/3 2xl:w-2/6 md:flex-row">
+            <td className="min-w-fit"><Typography variant="h6" color="primary">Submittable Before</Typography></td>
+            <td>
+              <TextField
+                type="datetime-local"
+                variant="outlined"
+                placeholder="Title"
+                size="small"
+                className="w-full sm:w-60"
+                name="submittableBefore"
+                onChange={formik.handleChange}
+                value={date.format(new Date(formik.values.submittableBefore), 'YYYY-MM-DDThh:mm')}
+                error={formik.touched.submittableBefore && formik.errors.submittableBefore}
+                helperText={formik.touched && formik.errors.submittableBefore}
+              />
+            </td>
+          </tr>
+          <tr className="flex flex-col justify-between w-full lg:w-2/3 2xl:w-2/6 md:flex-row">
+            <td className="min-w-fit"><Typography variant="h6" color="primary">Is demo:</Typography></td>
+            <td className="flex justify-start w-full sm:w-60">
+              <Select
+                variant="outlined"
+                placeholder="Subject"
+                size="small"
+                className="w-full sm:w-60"
+                name="isDemo"
+                onChange={formik.handleChange}
+                value={formik.values.isDemo}
+                error={formik.touched.isDemo && formik.errors.isDemo}
+                helperText={formik.touched && formik.errors.isDemo}
+              >
+                <MenuItem value="true">Yes</MenuItem>
+                <MenuItem value="false">No</MenuItem>
+              </Select>
+            </td>
+          </tr>
+          <tr className="flex flex-col justify-between w-full lg:w-2/3 2xl:w-2/6 md:flex-row">
+            <td className="w-min-fit"><Typography variant="h6" color="primary">Qualification</Typography></td>
             <td>
               <Select
                 variant="outlined"
@@ -187,7 +283,7 @@ export default function UpdateTest({ test }) {
               </Select>
             </td>
           </tr>
-          <tr className="flex flex-col justify-between w-full md:w-2/3 lg:w-1/2 2xl:w-2/6 md:flex-row">
+          <tr className="flex flex-col justify-between w-full lg:w-2/3 2xl:w-2/6 md:flex-row">
             <td>
               <Typography variant="h6" color="primary">Duration:</Typography>
             </td>
@@ -281,7 +377,7 @@ export default function UpdateTest({ test }) {
                 )&nbsp;
                 {q.statement}
               </Typography>
-              {q.image && <img src={URL.createObjectURL(q.image)} alt="preview" className="self-center w-full max-w-xs" />}
+              {q.image && <img src={(typeof q.image) === 'string' ? q.image : URL.createObjectURL(q.image)} alt="preview" className="self-center w-full max-w-xs" />}
               {
                 q.type === 'MCQS' && (
                   <>
@@ -324,13 +420,6 @@ export default function UpdateTest({ test }) {
         }
       </div>
       {formik.touched.questions && formik.errors.questions && <small className="-mt-5 text-red-500">{formik.errors.questions}</small>}
-      <div className="flex items-center justify-center">
-        <Button variant="contained" type="submit">Update Test</Button>
-      </div>
     </form>
   );
 }
-
-UpdateTest.propTypes = {
-  test: PropTypes.object.isRequired,
-};
