@@ -16,7 +16,7 @@ import {
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 
-import { useNavigate } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 
 import { useSelector, useDispatch } from 'react-redux';
 import { login } from '../../redux/actions/account';
@@ -29,8 +29,6 @@ import { addErrorToast } from '../../redux/actions/toasts';
 export default function AdminLogin() {
   const { account } = useSelector((state) => state);
   const dispatch = useDispatch();
-  const navigate = useNavigate();
-  if (account.admin) navigate('/admin');
   const { isLoading, mutate } = useMutation(
     (values) => loginAdmin(values),
     {
@@ -54,6 +52,7 @@ export default function AdminLogin() {
     onSubmit: (values) => mutate(values),
   });
   // -----------------
+  if (account.admin) return <Navigate replace to="/admin" />;
   return (
     <Card elevation={3} className="w-full py-6 my-6">
       <Stack spacing={2}>

@@ -11,14 +11,33 @@ import {
   FormControl,
   FormHelperText,
   InputLabel,
+  CircularProgress,
 } from '@mui/material';
+
+import { Link } from 'react-router-dom';
+
+import { useDispatch } from 'react-redux';
 
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 
+import { useMutation } from 'react-query';
+import { addSuccessToast, addErrorToast } from '../../redux/actions/toasts';
+import { signupStudent } from '../../api/signup';
+
 import logo from '../../assets/logo.png';
 
 export default function StudentSignup() {
+  const dispatch = useDispatch();
+  const { isLoading, mutate } = useMutation(
+    (data) => signupStudent(data),
+    {
+      onSuccess: () => dispatch(addSuccessToast({ message: 'Student registered successfully' })),
+      onError: (err) => dispatch(
+        addErrorToast({ message: err.response?.data?.error || err.message }),
+      ),
+    },
+  );
   // Form requirements
   const schema = yup.object({
     fullName: yup.string().required('Full Name is required').min(2, 'Full Name should be at least 2 characters long'),
@@ -36,7 +55,7 @@ export default function StudentSignup() {
       cnic: 0,
     },
     validationSchema: schema,
-    onSubmit: (values) => console.log(values),
+    onSubmit: (values) => mutate(values),
   });
   // -----------------
   return (
@@ -115,7 +134,16 @@ export default function StudentSignup() {
             error={formik.touched.cnic && formik.errors.cnic}
             helperText={formik.touched.cnic && formik.errors.cnic}
           />
-          <Button type="submit" variant="contained">Signup as a Student</Button>
+          <Button type="submit" disabled={isLoading} variant="contained">
+            {
+              isLoading
+                ? <CircularProgress />
+                : 'Signup as a Student'
+            }
+          </Button>
+          <Link to="/login/student">
+            <Typography variant="h6" align="center" color="primary">Already registered? Login</Typography>
+          </Link>
         </Stack>
       </Stack>
     </Card>

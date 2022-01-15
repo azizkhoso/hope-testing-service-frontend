@@ -6,17 +6,39 @@ import {
   Button,
   Typography,
   TextField,
+  CircularProgress,
 } from '@mui/material';
 
-import { useNavigate } from 'react-router-dom';
+import {
+  useMutation,
+} from 'react-query';
 
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 
+import { useNavigate, Link, Navigate } from 'react-router-dom';
+
+import { useSelector, useDispatch } from 'react-redux';
+import { login } from '../../redux/actions/account';
+
+import { loginStudent } from '../../api/login';
+
 import logo from '../../assets/logo.png';
+import { addErrorToast } from '../../redux/actions/toasts';
 
 export default function StudentLogin() {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
+  const student = useSelector((state) => state.account.student);
+  const { isLoading, mutate } = useMutation(
+    (values) => loginStudent(values),
+    {
+      onSuccess: ({ data }) => dispatch(login(data)),
+      onError: (err) => dispatch(
+        addErrorToast({ message: err.response?.data?.error || err.message }),
+      ),
+    },
+  );
   // Form requirements
   const schema = yup.object({
     email: yup.string().required('Email is required').email('Enter a valid email'),
@@ -28,9 +50,10 @@ export default function StudentLogin() {
       password: '',
     },
     validationSchema: schema,
-    onSubmit: (values) => console.log(values),
+    onSubmit: (values) => mutate(values),
   });
   // -----------------
+  if (student) return <Navigate replace to="/student" />;
   return (
     <Card elevation={3} className="w-full pb-6 my-6">
       <Stack spacing={2}>
@@ -63,7 +86,16 @@ export default function StudentLogin() {
             error={formik.touched.password && formik.errors.password}
             helperText={formik.touched.password && formik.errors.password}
           />
-          <Button type="submit" variant="contained">Login as a Student</Button>
+          <Button type="submit" disabled={isLoading} variant="contained">
+            {
+              isLoading
+                ? <CircularProgress />
+                : 'Login as Student'
+            }
+          </Button>
+          <Link to="/signup/student">
+            <Typography variant="h6" align="center" color="primary">Don&apos;t have account? Register</Typography>
+          </Link>
         </Stack>
       </Stack>
     </Card>

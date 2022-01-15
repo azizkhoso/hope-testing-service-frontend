@@ -4,7 +4,7 @@
 import axios from 'axios';
 
 const admin = axios.create({
-  baseURL: `${process.env.NODE_ENV === 'development' ? 'http://localhost:4000' : 'https://hope-testing-service-backend.herokuapp.com'}/admin`,
+  baseURL: `${process.env.REACT_APP_BACKEND_URL}/admin`,
 });
 
 export function getTests() {
