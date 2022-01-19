@@ -1,8 +1,10 @@
+/* eslint-disable no-underscore-dangle */
 import React from 'react';
 
 import {
   Routes,
   Route,
+  Link,
 } from 'react-router-dom';
 
 import {
@@ -13,9 +15,36 @@ import {
   TableHead,
   TableRow,
   TableCell,
+  TableBody,
+  IconButton,
+  CircularProgress,
 } from '@mui/material';
 
+import {
+  Edit,
+  Delete,
+} from '@mui/icons-material';
+
+import date from 'date-and-time';
+
+import { useSelector, useDispatch } from 'react-redux';
+
+import { useQuery } from 'react-query';
+import { getTests } from '../../api/student';
+
+import { addErrorToast } from '../../redux/actions/toasts';
+
 export default function Tests() {
+  const student = useSelector((state) => state.account.student);
+  const dispatch = useDispatch();
+  const [tests, setTests] = React.useState([]);
+  const { isLoading } = useQuery(['tests', student._id], getTests, {
+    onSuccess: ({ data }) => setTests(data.tests),
+    onError: (err) => dispatch(
+      addErrorToast({ message: err.response?.data?.error || err.message }),
+    ),
+  });
+  if (isLoading) return <div className="relative inset-0 flex items-center justify-center w-full h-full"><CircularProgress /></div>;
   return (
     <Routes>
       <Route
@@ -36,6 +65,34 @@ export default function Tests() {
                     <TableCell align="center">Action</TableCell>
                   </TableRow>
                 </TableHead>
+                <TableBody>
+                  {
+                    tests.map((test, index) => (
+                      <TableRow key={test._id}>
+                        <TableCell>{index}</TableCell>
+                        <TableCell>{test.title}</TableCell>
+                        <TableCell align="center">{test.subject}</TableCell>
+                        <TableCell align="center" style={{ minWidth: '100px' }}>
+                          {date.format(new Date(test.startsAt), 'DD-MMM-YYYY hh:mm A')}
+                        </TableCell>
+                        <TableCell align="center" style={{ minWidth: '100px' }}>
+                          {date.format(new Date(test.submittableBefore), 'DD-MMM-YYYY hh:mm A')}
+                        </TableCell>
+                        <TableCell align="center">{test.qualification}</TableCell>
+                        <TableCell align="center">
+                          <IconButton>
+                            <Link to={`../../tests/${test._id}`}>
+                              <Edit />
+                            </Link>
+                          </IconButton>
+                          <IconButton>
+                            <Delete />
+                          </IconButton>
+                        </TableCell>
+                      </TableRow>
+                    ))
+                  }
+                </TableBody>
               </Table>
             </TableContainer>
           </div>

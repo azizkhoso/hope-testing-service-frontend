@@ -22,6 +22,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { login } from '../../redux/actions/account';
 
 import { loginStudent } from '../../api/login';
+import * as utils from '../../utils';
 
 import logo from '../../assets/logo.png';
 import { addErrorToast } from '../../redux/actions/toasts';
@@ -33,7 +34,10 @@ export default function StudentLogin() {
   const { isLoading, mutate } = useMutation(
     (values) => loginStudent(values),
     {
-      onSuccess: ({ data }) => dispatch(login(data)),
+      onSuccess: ({ data }) => {
+        dispatch(login(data));
+        utils.saveToken(data.token);
+      },
       onError: (err) => dispatch(
         addErrorToast({ message: err.response?.data?.error || err.message }),
       ),
