@@ -20,22 +20,26 @@ import NotFound from '../NotFound';
 import SignUp from '../signup';
 import Toasts from '../toasts';
 
+import ErrorBoundary from '../ErrorBoundary';
+
 const queryClient = new QueryClient();
 export default function AppRoutes() {
   return (
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
         <div className="w-screen h-screen min-h-screen m-0 border-0">
-          <Routes>
-            <Route index element={<Navigate replace to="/login" />} />
-            <Route path="/login/*" element={<Login />} />
-            <Route path="/signup/*" element={<SignUp />} />
-            <Route path="/student/*" element={<Student />} />
-            <Route path="/teacher/*" element={<Teacher />} />
-            <Route path="/admin/*" element={<Admin />} />
-            <Route path="/not-found/*" element={<NotFound />} />
-            <Route path="*" element={<Navigate replace to="/not-found" />} />
-          </Routes>
+          <ErrorBoundary>
+            <Routes>
+              <Route index element={<Navigate replace to="/login" />} />
+              <Route path="/login/*" element={<Login />} />
+              <Route path="/signup/*" element={<SignUp />} />
+              <Route path="/student/*" element={<Student />} />
+              <Route path="/teacher/*" element={<Teacher />} />
+              <Route path="/admin/*" element={<Admin />} />
+              <Route path="/not-found/*" element={<NotFound />} />
+              <Route path="*" element={<Navigate replace to="/not-found" />} />
+            </Routes>
+          </ErrorBoundary>
         </div>
         <Toasts />
       </BrowserRouter>
