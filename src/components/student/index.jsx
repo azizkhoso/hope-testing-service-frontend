@@ -19,8 +19,8 @@ import Tests from './Tests';
 
 export default function Student() {
   const [openDrawer, setOpenDrawer] = React.useState(false);
-  const { account } = useSelector((s) => s);
-  if (!account.student) return <Navigate replace to="/login/student" />;
+  const { student } = useSelector((state) => state.account);
+  if (!student) return <Navigate replace to="/login/student" />;
   return (
     <div className="flex flex-col md:flex-row">
       <Sidebar open={openDrawer} setOpen={setOpenDrawer} />
@@ -29,7 +29,7 @@ export default function Student() {
           <IconButton className="block md:hidden" onClick={() => setOpenDrawer(true)}>
             <Menu />
           </IconButton>
-          <Typography variant="h5" className="flex items-center flex-grow">Student Name</Typography>
+          <Typography variant="h5" align="center" className="w-full">{student.fullName}</Typography>
           <IconButton>
             <Logout />
           </IconButton>

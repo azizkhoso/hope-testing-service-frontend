@@ -16,14 +16,9 @@ import {
   TableRow,
   TableCell,
   TableBody,
-  IconButton,
+  Button,
   CircularProgress,
 } from '@mui/material';
-
-import {
-  Edit,
-  Delete,
-} from '@mui/icons-material';
 
 import date from 'date-and-time';
 
@@ -33,6 +28,7 @@ import { useQuery } from 'react-query';
 import { getTests } from '../../api/student';
 
 import { addErrorToast } from '../../redux/actions/toasts';
+import AttemptTest from './AttemptTest';
 
 export default function Tests() {
   const student = useSelector((state) => state.account.student);
@@ -50,7 +46,7 @@ export default function Tests() {
       <Route
         index
         element={(
-          <div className="flex flex-col w-full h-full gap-6">
+          <div className="page-content">
             <Typography variant="h6" align="center">Tests</Typography>
             <TableContainer className="w-full" component={Card}>
               <Table>
@@ -69,7 +65,7 @@ export default function Tests() {
                   {
                     tests.map((test, index) => (
                       <TableRow key={test._id}>
-                        <TableCell>{index}</TableCell>
+                        <TableCell>{index + 1}</TableCell>
                         <TableCell>{test.title}</TableCell>
                         <TableCell align="center">{test.subject}</TableCell>
                         <TableCell align="center" style={{ minWidth: '100px' }}>
@@ -80,14 +76,9 @@ export default function Tests() {
                         </TableCell>
                         <TableCell align="center">{test.qualification}</TableCell>
                         <TableCell align="center">
-                          <IconButton>
-                            <Link to={`../../tests/${test._id}`}>
-                              <Edit />
-                            </Link>
-                          </IconButton>
-                          <IconButton>
-                            <Delete />
-                          </IconButton>
+                          <Link to={`../../tests/${test._id}`}>
+                            <Button variant="text" color="primary">Attempt</Button>
+                          </Link>
                         </TableCell>
                       </TableRow>
                     ))
@@ -98,6 +89,7 @@ export default function Tests() {
           </div>
         )}
       />
+      <Route path="/:id" element={<AttemptTest />} />
     </Routes>
   );
 }
