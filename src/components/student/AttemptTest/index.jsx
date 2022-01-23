@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 import React from 'react';
 
 import {
@@ -20,6 +21,7 @@ import { getTest } from '../../../api/student';
 import { addErrorToast } from '../../../redux/actions/toasts';
 
 import Question from './Question';
+import TestResult from './TestResult';
 
 // Page styles
 import styles from './AttemptTest.module.css';
@@ -38,6 +40,7 @@ function AttemptTest() {
     },
   });
   const [index, setIndex] = React.useState(0);
+  const [answers, setAnswers] = React.useState([]);
   if (isLoading) return <div className="page-pre-loader"><CircularProgress /></div>;
   return (
     <div className="page-content">
@@ -51,14 +54,36 @@ function AttemptTest() {
           <Typography variant="h6" color="primary" className={styles['record-item-name']}>Submittable Before:</Typography>
           <Typography variant="h6" className={styles['record-item-value']}>{date.format(new Date(test.submittableBefore), 'HH:MM A DD-MMM-YYYY')}</Typography>
         </div>
-        {/* Questions Component */}
+        { // Question Component
+          test.questions && (index < test.questions.length) && test.questions.map((q, idx) => (
+            // Implementing this logic so that relevant component is mounted only
+            index === idx && (
+              <Question
+                key={q._id}
+                question={q}
+                index={index}
+                onSubmit={
+                  (ans) => {
+                    setAnswers([...answers, ans]);
+                    setIndex(index + 1);
+                  }
+                }
+                onSkip={
+                  (ans) => {
+                    setAnswers([...answers, ans]);
+                    setIndex(index + 1);
+                  }
+                }
+              />
+            )
+          ))
+        }
         {
-          test.questions && (
-            <Question
-              question={test.questions[index]}
-              index={index}
-              onSubmit={() => setIndex(index + 1)}
-              onSkip={() => setIndex(index + 1)}
+          test.questions && index >= test.questions.length && (
+            <TestResult
+              questions={test.questions}
+              answers={answers}
+              testId={test._id}
             />
           )
         }

@@ -31,4 +31,8 @@ export function getTest(id) {
   return student.get(`/tests/${id}`);
 }
 
+export function submitTest(data) {
+  return student.post('/submissions', data);
+}
+
 export default student;
