@@ -76,7 +76,7 @@ export default function StudentLogin() {
             name="email"
             value={formik.values.email}
             onChange={formik.handleChange}
-            error={formik.touched.email && formik.errors.email}
+            error={Boolean(formik.touched.email) && formik.errors.email}
             helperText={formik.touched.email && formik.errors.email}
           />
           <TextField
@@ -87,7 +87,7 @@ export default function StudentLogin() {
             name="password"
             value={formik.values.password}
             onChange={formik.handleChange}
-            error={formik.touched.password && formik.errors.password}
+            error={Boolean(formik.touched.password) && formik.errors.password}
             helperText={formik.touched.password && formik.errors.password}
           />
           <Button type="submit" disabled={isLoading} variant="contained">
