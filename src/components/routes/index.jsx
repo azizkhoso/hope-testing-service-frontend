@@ -12,6 +12,8 @@ import {
 } from 'react-query';
 import { ReactQueryDevtools } from 'react-query/devtools';
 
+import Topbar from '../topbar';
+import Home from '../home';
 import Login from '../login';
 import Student from '../student';
 import Teacher from '../teacher';
@@ -29,8 +31,9 @@ export default function AppRoutes() {
       <BrowserRouter>
         <div className="w-screen h-screen min-h-screen m-0 border-0">
           <ErrorBoundary>
+            <Topbar />
             <Routes>
-              <Route index element={<Navigate replace to="/login" />} />
+              <Route index element={<Home />} />
               <Route path="/login/*" element={<Login />} />
               <Route path="/signup/*" element={<SignUp />} />
               <Route path="/student/*" element={<Student />} />
