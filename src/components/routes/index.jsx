@@ -17,10 +17,10 @@ import Home from '../home';
 import DemoTests from '../demo-tests';
 import Toasts from '../toasts';
 import NotFound from '../NotFound';
-/* import Login from '../login';
-import Student from '../student';
-import Teacher from '../teacher';
+import Login from '../login';
 import Admin from '../admin';
+/* import Student from '../student';
+import Teacher from '../teacher';
 import SignUp from '../signup'; */
 
 import ErrorBoundary from '../ErrorBoundary';
@@ -36,11 +36,11 @@ export default function AppRoutes() {
             <Routes>
               <Route index element={<Home />} />
               <Route path="/demo-tests/*" element={<DemoTests />} />
-              {/* <Route path="/login/*" element={<Login />} />
-              <Route path="/signup/*" element={<SignUp />} />
+              <Route path="/login/*" element={<Login />} />
+              <Route path="/admin/*" element={<Admin />} />
+              {/* <Route path="/signup/*" element={<SignUp />} />
               <Route path="/student/*" element={<Student />} />
-              <Route path="/teacher/*" element={<Teacher />} />
-              <Route path="/admin/*" element={<Admin />} /> */}
+              <Route path="/teacher/*" element={<Teacher />} /> */}
               <Route path="/not-found/*" element={<NotFound />} />
               <Route path="*" element={<Navigate replace to="/not-found" />} />
             </Routes>
