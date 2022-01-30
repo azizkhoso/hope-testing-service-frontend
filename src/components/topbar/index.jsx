@@ -42,7 +42,6 @@ function Topbar() {
     { title: 'About Us', link: '/about-us' },
     { title: 'Contact', link: '/contact' },
     { title: 'Demo Tests', link: '/demo-tests' },
-    { title: 'Login', link: '/login' },
   ];
   if (!isVisibleOn[pathname]) return <></>;
   return (

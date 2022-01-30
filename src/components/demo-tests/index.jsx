@@ -58,7 +58,6 @@ function DemoTests() {
     navigate(`?${queryString.stringify(filter)}`);
     refetch(filter);
   }, [filter]);
-  console.log({ demoTests });
   return (
     <Routes>
       <Route
@@ -105,7 +104,7 @@ function DemoTests() {
               </div>
               {
                 (data) && (
-                  <div className="flex flex-wrap justify-center">
+                  <div className="flex flex-wrap justify-center gap-6">
                     {
                       demoTests.length === 0 && (
                         <Typography variant="body1" align="center">No tests available yet</Typography>
