@@ -39,6 +39,7 @@ function TestResult({ questions, answers, testId }) {
     ),
   });
   function handleSubmit() {
+    if (!student) return;
     const data = {
       testId,
       submittedBy: student._id,

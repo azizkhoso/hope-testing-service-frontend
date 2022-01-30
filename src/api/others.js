@@ -14,4 +14,8 @@ export function getDemoTests(values) {
   return instance.get(`/demo-tests?${queryString.stringify(values.queryKey[1])}`);
 }
 
+export function getDemoTest(_id) {
+  return instance.get(`/demo-tests/${_id}`);
+}
+
 export default instance;

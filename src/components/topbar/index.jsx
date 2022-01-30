@@ -22,12 +22,12 @@ import MenuIcon from '@mui/icons-material/Menu';
 import logo from '../../assets/logo.png';
 
 // Topbar should not be visible on following pages
-const isVisibleOn = {
-  '/': true,
-  '/contact': true,
-  '/about-us': true,
-  '/demo-tests': true,
-};
+const isVisibleOn = [
+  '/',
+  '/contact',
+  '/about-us',
+  '/demo-tests',
+];
 
 function Topbar() {
   const { pathname } = useLocation();
@@ -41,9 +41,11 @@ function Topbar() {
   const pages = [
     { title: 'About Us', link: '/about-us' },
     { title: 'Contact', link: '/contact' },
-    { title: 'Demo Tests', link: '/demo-tests' },
+    { title: 'Online Tests', link: '/demo-tests' },
   ];
-  if (!isVisibleOn[pathname]) return <></>;
+  if (
+    !(isVisibleOn.find((r) => pathname.startsWith(r)))
+  ) return <></>;
   return (
     <AppBar position="static" color="default" elevation={1}>
       <Container maxWidth="xl">

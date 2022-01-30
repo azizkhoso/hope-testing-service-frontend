@@ -30,7 +30,7 @@ function Question({
   React.useEffect(() => {
     let timeoutId = 0;
     if (remainingTime === 0) {
-      onSkip();
+      onSkip({ questionId: question._id, answer });
     } else {
       timeoutId = setTimeout(() => {
         // After every second
@@ -113,7 +113,7 @@ function Question({
             <Typography variant="h6">Your answer:</Typography>
             <TextField
               variant="standard"
-              className="w-full"
+              className="flex-grow"
               value={answer}
               onChange={(e) => setAnswer(e.target.value)}
             />

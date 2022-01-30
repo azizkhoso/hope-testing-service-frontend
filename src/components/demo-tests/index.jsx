@@ -30,6 +30,10 @@ import { getDemoTests } from '../../api/others';
 
 import { addErrorToast } from '../../redux/actions/toasts';
 
+import AttempTest from './AttempTest';
+
+import styles from './DemoTests.module.css';
+
 function DemoTests() {
   const qualifications = ['XI', 'XII', 'Bachelor', 'Masters'];
   const subjects = ['English', 'Math', 'Physics', 'Chemistery', 'Biology'];
@@ -66,7 +70,7 @@ function DemoTests() {
           <div className="block">
             <Typography variant="h6" color="primary" align="center">Demo Tests</Typography>
             <Container>
-              <div className="flex flex-wrap items-center gap-3 my-3">
+              <div className={styles.filter}>
                 <Typography variant="h6">Filter</Typography>
                 <span className="flex-grow w-full md:w-auto" />
                 <FormControl
@@ -104,7 +108,7 @@ function DemoTests() {
               </div>
               {
                 (data) && (
-                  <div className="flex flex-wrap justify-center gap-6">
+                  <div className={styles['cards-container']}>
                     {
                       demoTests.length === 0 && (
                         <Typography variant="body1" align="center">No tests available yet</Typography>
@@ -143,7 +147,7 @@ function DemoTests() {
           </div>
         )}
       />
-      <Route path="/:_id" element={<p>Test </p>} />
+      <Route path="/:_id" element={<AttempTest />} />
     </Routes>
   );
 }
