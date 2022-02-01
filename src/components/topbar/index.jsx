@@ -22,11 +22,12 @@ import MenuIcon from '@mui/icons-material/Menu';
 import logo from '../../assets/logo.png';
 
 // Topbar should not be visible on following pages
-const isVisibleOn = [
-  '/',
-  '/contact',
-  '/about-us',
-  '/demo-tests',
+const isNotVisibleOn = [
+  '/signup',
+  '/login',
+  '/admin',
+  '/student',
+  '/teacher',
 ];
 
 function Topbar() {
@@ -44,7 +45,7 @@ function Topbar() {
     { title: 'Online Tests', link: '/demo-tests' },
   ];
   if (
-    !(isVisibleOn.find((r) => pathname.startsWith(r)))
+    (isNotVisibleOn.find((r) => pathname.startsWith(r)))
   ) return <></>;
   return (
     <AppBar position="static" color="default" elevation={1}>

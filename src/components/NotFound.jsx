@@ -4,8 +4,8 @@ import { Typography } from '@mui/material';
 
 export default function NotFound() {
   return (
-    <div className="absolute inset-0 flex items-center justify-center">
-      <Typography variant="h3" color="GrayText">
+    <div className="relative flex w-full h-full">
+      <Typography variant="h3" color="GrayText" className="m-auto">
         404, sorry page not found :(
       </Typography>
     </div>

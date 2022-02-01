@@ -14,6 +14,7 @@ import { ReactQueryDevtools } from 'react-query/devtools';
 
 import Topbar from '../topbar';
 import Home from '../home';
+import About from '../about';
 import DemoTests from '../demo-tests';
 import Toasts from '../toasts';
 import NotFound from '../NotFound';
@@ -35,6 +36,7 @@ export default function AppRoutes() {
             <Topbar />
             <Routes>
               <Route index element={<Home />} />
+              <Route path="/about-us" element={<About />} />
               <Route path="/demo-tests/*" element={<DemoTests />} />
               <Route path="/login/*" element={<Login />} />
               <Route path="/admin/*" element={<Admin />} />

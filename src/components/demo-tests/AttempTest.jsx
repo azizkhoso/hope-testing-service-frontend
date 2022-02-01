@@ -49,7 +49,7 @@ function AttempTest() {
   return (
     <div className="block">
       <Typography variant="h6" color="primary" align="center">{test.title}</Typography>
-      <Container>
+      <Container maxWidth="xl">
         <div className="flex flex-wrap my-3">
           <Typography variant="h6" className="w-1/2 lg:w-2/6">Subject</Typography>
           <Typography variant="body1" className="w-1/2 lg:w-4/6">{test.subject}</Typography>
@@ -58,39 +58,41 @@ function AttempTest() {
           <Typography variant="h6" className="w-1/2 lg:w-2/6">Created by</Typography>
           <Typography variant="body1" className="w-1/2 lg:w-4/6">{test.createdBy}</Typography>
         </div>
-        { // Question Component
-          test.questions && (index < test.questions.length) && test.questions.map((q, idx) => (
-            // Implementing this logic so that relevant component is mounted only
-            index === idx && (
-              <Question
-                key={q._id}
-                question={q}
-                index={index}
-                onSubmit={
-                  (ans) => {
-                    setAnswers([...answers, ans]);
-                    setIndex(index + 1);
+        <div className="w-full mx-auto">
+          { // Question Component
+            test.questions && (index < test.questions.length) && test.questions.map((q, idx) => (
+              // Implementing this logic so that relevant component is mounted only
+              index === idx && (
+                <Question
+                  key={q._id}
+                  question={q}
+                  index={index}
+                  onSubmit={
+                    (ans) => {
+                      setAnswers([...answers, ans]);
+                      setIndex(index + 1);
+                    }
                   }
-                }
-                onSkip={
-                  (ans) => {
-                    setAnswers([...answers, ans]);
-                    setIndex(index + 1);
+                  onSkip={
+                    (ans) => {
+                      setAnswers([...answers, ans]);
+                      setIndex(index + 1);
+                    }
                   }
-                }
+                />
+              )
+            ))
+          }
+          {
+            test.questions && index >= test.questions.length && (
+              <TestResult
+                questions={test.questions}
+                answers={answers}
+                testId={test._id}
               />
             )
-          ))
-        }
-        {
-          test.questions && index >= test.questions.length && (
-            <TestResult
-              questions={test.questions}
-              answers={answers}
-              testId={test._id}
-            />
-          )
-        }
+          }
+        </div>
       </Container>
     </div>
   );
