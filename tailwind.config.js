@@ -11,6 +11,9 @@ module.exports = {
         xl: '1500px',
         '2xl': '2100px',
       },
+      colors: {
+        primary: '#173041ff',
+      },
     },
   },
   variants: {
