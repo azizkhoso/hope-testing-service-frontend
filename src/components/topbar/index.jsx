@@ -11,7 +11,6 @@ import {
   Typography,
   Toolbar,
   Box,
-  // Button,
   IconButton,
   Menu,
   MenuItem,
@@ -48,7 +47,7 @@ function Topbar() {
     (isNotVisibleOn.find((r) => pathname.startsWith(r)))
   ) return <></>;
   return (
-    <AppBar position="static" color="default" elevation={1}>
+    <AppBar position="static" className="bg-white" elevation={1}>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <Link to="/">
@@ -94,7 +93,7 @@ function Topbar() {
               {pages.map((page) => (
                 <MenuItem key={page.title} onClick={handleCloseNavMenu}>
                   <Link to={page.link}>
-                    <Typography textAlign="center" color={page.title === pathname && 'primary'}>{page.title}</Typography>
+                    <Typography textAlign="center" className="font-bold" color={pathname.startsWith(page.link) ? 'secondary' : 'primary'}>{page.title}</Typography>
                   </Link>
                 </MenuItem>
               ))}
@@ -103,7 +102,7 @@ function Topbar() {
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, justifyContent: 'flex-end' }}>
             {pages.map((page) => (
               <Link to={page.link}>
-                <Typography className="mx-3" color={page.title === pathname && 'primary'} variant="body1">
+                <Typography className="mx-3 font-bold" color={pathname.startsWith(page.link) ? 'secondary' : 'primary'} variant="body1">
                   {page.title}
                 </Typography>
               </Link>
