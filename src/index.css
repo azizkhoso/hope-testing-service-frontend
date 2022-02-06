@@ -23,3 +23,11 @@
     w-full
     h-full
 }
+
+.landing-page {
+  /* Primary 50 */
+  background-color: #ecf3f8;
+  @apply
+    /* Default */
+    page-content
+}

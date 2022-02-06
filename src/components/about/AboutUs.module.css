@@ -1,11 +1,11 @@
 .header {
+  min-height: '200px';
   @apply
     /* Default */
     px-3
+    my-6
     flex
     flex-col
-    bg-primary
-    h-1/3
 }
 
 .header-heading {
@@ -15,7 +15,6 @@
     mt-auto
     font-bold
     text-center
-    text-white
 }
 
 .header-paragraph {
@@ -24,17 +23,23 @@
     w-full
     mb-auto
     text-center
-    text-white
 }
 
 .content-container {
   @apply
     /* Default */
     flex
-    flex-wrap
-    justify-center
-    gap-3
-    px-3
+    flex-col
+    items-center
+    gap-9
+    p-6
+}
+
+.card {
+  @apply
+    /* Default */
+    p-6
+    bg-white
 }
 
 .heading {
@@ -42,9 +47,11 @@
     /* Default */
     w-full
     mt-auto
+    mb-4
     font-bold
     text-center
-    text-primary
+    text-xl
+    text-secondary
 }
 
 .content {
