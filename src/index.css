@@ -30,4 +30,5 @@
   @apply
     /* Default */
     page-content
+    min-h-screen
 }

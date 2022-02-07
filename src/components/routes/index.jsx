@@ -32,7 +32,7 @@ export default function AppRoutes() {
   return (
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
-        <div className="w-screen h-screen min-h-screen m-0 border-0">
+        <div className="w-screen min-h-screen m-0 border-0">
           <ErrorBoundary>
             <Topbar />
             <Routes>
