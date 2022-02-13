@@ -26,13 +26,14 @@ import Teacher from '../teacher';
 import SignUp from '../signup'; */
 
 import ErrorBoundary from '../ErrorBoundary';
+import Footer from '../footer';
 
 const queryClient = new QueryClient();
 export default function AppRoutes() {
   return (
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
-        <div className="w-screen min-h-screen m-0 border-0">
+        <div className="w-screen min-h-screen m-0 border-0 stack">
           <ErrorBoundary>
             <Topbar />
             <Routes>
@@ -48,6 +49,7 @@ export default function AppRoutes() {
               <Route path="/not-found/*" element={<NotFound />} />
               <Route path="*" element={<Navigate replace to="/not-found" />} />
             </Routes>
+            <Footer />
           </ErrorBoundary>
         </div>
         <Toasts />

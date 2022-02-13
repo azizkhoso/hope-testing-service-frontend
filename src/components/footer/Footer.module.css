@@ -1,0 +1,8 @@
+.container {
+  background-color: #2f6184;
+  /* Default */
+  @apply
+  mt-auto
+  py-6
+  text-white
+}

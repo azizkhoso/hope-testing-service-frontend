@@ -2,6 +2,30 @@
 @tailwind components;
 @tailwind utilities;
 
+/*
+  primary-50:   #ecf3f8
+  primary-100:  #c6dceb
+  primary-200:  #a1c5de
+  primary-300:  #7baed0
+  primary-400:  #5597c3
+  primary-500:  #3c7daa
+  primary-600:  #2f6184
+  primary-700:  #21465e
+  primary-800:  #142a39
+  primary-900:  #070e13
+  primary:      #173041
+*/
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.stack {
+  display: flex;
+  flex-direction: column;
+}
+
 .page-content {
   @apply
     /* Default */
@@ -30,5 +54,5 @@
   @apply
     /* Default */
     page-content
-    min-h-screen
+    flex-grow
 }
