@@ -2,16 +2,15 @@ import React from 'react';
 
 import {
   Typography,
+  Container,
 } from '@mui/material';
 
-import onlineLearning from '../../assets/online-learning.png';
+import onlineExams from '../../assets/online-exams.gif';
 
 function Home() {
   return (
-    <div className="m-0 page-content b-0">
-      <div
-        className="container relative flex justify-between w-full px-6"
-      >
+    <div className="home">
+      <Container maxWidth="xl" className="justify-between row">
         <Typography
           variant="h2"
           color="primary"
@@ -20,11 +19,11 @@ function Home() {
           Best online tests for you
         </Typography>
         <img
-          src={onlineLearning}
-          alt="online learning"
+          src={onlineExams}
+          alt="online exams"
           className="hidden w-1/3 my-auto md:block"
         />
-      </div>
+      </Container>
     </div>
   );
 }

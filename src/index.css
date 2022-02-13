@@ -56,3 +56,10 @@
     page-content
     flex-grow
 }
+
+.home {
+  @apply
+    /* Default */
+    page-content
+    flex-grow
+}
