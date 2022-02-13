@@ -33,7 +33,7 @@ export default function AppRoutes() {
   return (
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
-        <div className="w-screen min-h-screen m-0 border-0 stack">
+        <div className="absolute inset-x-0 min-h-screen m-0 stack">
           <ErrorBoundary>
             <Topbar />
             <Routes>

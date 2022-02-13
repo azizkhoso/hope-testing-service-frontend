@@ -14,7 +14,7 @@ import styles from './Footer.module.css';
 export default function Footer() {
   return (
     <Container disableGutters maxWidth="false" className={styles.container}>
-      <Container maxWidth="xl" className="text-white row">
+      <Container maxWidth="xl" className="row">
         <div className="stack">
           <Link to="/">
             <Typography variant="h6">Hope Testing Serice</Typography>

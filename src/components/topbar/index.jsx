@@ -47,7 +47,7 @@ function Topbar() {
     (isNotVisibleOn.find((r) => pathname.startsWith(r)))
   ) return <></>;
   return (
-    <AppBar position="static" className="bg-white" elevation={1}>
+    <AppBar position="relative" className="z-10 py-2 bg-white shadow-lg" elevation={4}>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <Link to="/">
@@ -57,7 +57,7 @@ function Topbar() {
                 alt="hts logo"
                 className="w-9"
               />
-              <Typography variant="h6" color="primary">Hope Testing Service</Typography>
+              <Typography variant="h6" color={pathname === '/' ? 'primary' : 'gray'}>Hope Testing Service</Typography>
             </div>
           </Link>
           <div className="flex-grow" />
@@ -93,7 +93,7 @@ function Topbar() {
               {pages.map((page) => (
                 <MenuItem key={page.title} onClick={handleCloseNavMenu}>
                   <Link to={page.link}>
-                    <Typography textAlign="center" className="font-bold" color={pathname.startsWith(page.link) ? 'secondary' : 'primary'}>{page.title}</Typography>
+                    <Typography textAlign="center" className="font-bold" color={pathname.startsWith(page.link) ? 'primary' : 'gray'}>{page.title}</Typography>
                   </Link>
                 </MenuItem>
               ))}
@@ -102,7 +102,7 @@ function Topbar() {
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, justifyContent: 'flex-end' }}>
             {pages.map((page) => (
               <Link to={page.link}>
-                <Typography className="mx-3 font-bold" color={pathname.startsWith(page.link) ? 'secondary' : 'primary'} variant="body1">
+                <Typography className="mx-3 font-bold" color={pathname.startsWith(page.link) ? 'primary' : 'gray'} variant="body1">
                   {page.title}
                 </Typography>
               </Link>
