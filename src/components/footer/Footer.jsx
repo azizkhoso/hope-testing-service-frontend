@@ -2,6 +2,7 @@ import React from 'react';
 
 import {
   Link,
+  useLocation,
 } from 'react-router-dom';
 
 import {
@@ -11,7 +12,20 @@ import {
 
 import styles from './Footer.module.css';
 
+// Footer should not be visible on following pages
+const isNotVisibleOn = [
+  '/signup',
+  '/login',
+  '/admin',
+  '/student',
+  '/teacher',
+];
+
 export default function Footer() {
+  const { pathname } = useLocation();
+  if (
+    (isNotVisibleOn.find((r) => pathname.startsWith(r)))
+  ) return <></>;
   return (
     <Container disableGutters maxWidth="false" className={styles.container}>
       <Container maxWidth="xl" className="row">
