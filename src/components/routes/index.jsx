@@ -17,6 +17,7 @@ import Home from '../home';
 import About from '../about';
 import Contact from '../contact';
 import DemoTests from '../demo-tests';
+import Faq from '../faq';
 import Toasts from '../toasts';
 import NotFound from '../NotFound';
 import Login from '../login';
@@ -41,6 +42,7 @@ export default function AppRoutes() {
               <Route path="/about-us" element={<About />} />
               <Route path="/contact" element={<Contact />} />
               <Route path="/demo-tests/*" element={<DemoTests />} />
+              <Route path="/faq" element={<Faq />} />
               <Route path="/login/*" element={<Login />} />
               <Route path="/admin/*" element={<Admin />} />
               {/* <Route path="/signup/*" element={<SignUp />} />
