@@ -39,8 +39,10 @@ function Topbar() {
     setAnchorElNav(null);
   };
   const pages = [
-    { title: 'About Us', link: '/about-us' },
+    { title: 'About', link: '/about-us' },
     { title: 'Contact', link: '/contact' },
+    { title: 'Announcements', link: '/announcemnts' },
+    { title: 'Results', link: '/results' },
     { title: 'Online Tests', link: '/demo-tests' },
   ];
   if (
@@ -97,6 +99,16 @@ function Topbar() {
                   </Link>
                 </MenuItem>
               ))}
+              <MenuItem key="/login" onClick={handleCloseNavMenu}>
+                <Link to="/login">
+                  <Typography textAlign="center" className="font-bold" color={pathname.startsWith('/login') ? 'primary' : 'gray'}>Login</Typography>
+                </Link>
+              </MenuItem>
+              <MenuItem key="/signup" onClick={handleCloseNavMenu}>
+                <Link to="/signup">
+                  <Typography textAlign="center" className="font-bold" color={pathname.startsWith('/signup') ? 'primary' : 'gray'}>Signup</Typography>
+                </Link>
+              </MenuItem>
             </Menu>
           </Box>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, justifyContent: 'flex-end' }}>
@@ -107,6 +119,16 @@ function Topbar() {
                 </Typography>
               </Link>
             ))}
+            <Link to="/login">
+              <Typography className="mx-3 font-bold" color={pathname.startsWith('/login') ? 'primary' : 'gray'} variant="body1">
+                Login
+              </Typography>
+            </Link>
+            <Link to="/signup">
+              <Typography className="mx-3 font-bold" color={pathname.startsWith('/signup') ? 'primary' : 'gray'} variant="body1">
+                Signup
+              </Typography>
+            </Link>
           </Box>
         </Toolbar>
       </Container>

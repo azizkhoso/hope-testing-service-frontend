@@ -1,3 +1,6 @@
+/* eslint-disable import/no-extraneous-dependencies */
+const plugin = require('tailwindcss/plugin');
+
 module.exports = {
   purge: ['./src/**/*.{js,jsx,ts,tsx}', './public/index.html'],
   darkMode: false, // or 'media' or 'class'
@@ -8,7 +11,7 @@ module.exports = {
         sm: '600px',
         md: '900px',
         lg: '1200px',
-        xl: '1500px',
+        xl: '1536px',
         '2xl': '2100px',
       },
       colors: {
@@ -20,5 +23,19 @@ module.exports = {
   variants: {
     extend: {},
   },
-  plugins: [],
+  plugins: [
+    plugin(({ addUtilities }) => { // Custom utilities
+      const newUtilities = {
+        '.row': {
+          display: 'flex',
+          'flex-wrap': 'wrap',
+        },
+        '.stack': {
+          display: 'flex',
+          'flex-direction': 'column',
+        },
+      };
+      addUtilities(newUtilities, ['responsive', 'hover']);
+    }),
+  ],
 };

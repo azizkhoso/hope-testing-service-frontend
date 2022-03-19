@@ -10,6 +10,11 @@ import {
   Typography,
 } from '@mui/material';
 
+import logo from '../../assets/logo.png';
+import facebookLogo from '../../assets/facebook.png';
+import instagramLogo from '../../assets/instagram.svg';
+import youtubeLogo from '../../assets/youtube.svg';
+
 import styles from './Footer.module.css';
 
 // Footer should not be visible on following pages
@@ -22,28 +27,58 @@ const isNotVisibleOn = [
 ];
 
 export default function Footer() {
+  const socialMedia = [
+    { title: 'facebook', image: facebookLogo, link: '/facebook' },
+    { title: 'instagram', image: instagramLogo, link: '/instagram' },
+    { title: 'youtube', image: youtubeLogo, link: '/youtube' },
+  ];
   const { pathname } = useLocation();
   if (
     (isNotVisibleOn.find((r) => pathname.startsWith(r)))
   ) return <></>;
   return (
-    <Container disableGutters maxWidth="false" className={styles.container}>
-      <Container maxWidth="xl" className="row">
-        <div className="stack">
-          <Link to="/">
-            <Typography variant="h6">Hope Testing Serice</Typography>
-          </Link>
-          <Link to="/about-us">
-            <Typography variant="h6">About us</Typography>
-          </Link>
-          <Link to="/faq">
-            <Typography variant="h6">FAQ</Typography>
-          </Link>
-          <Link to="/contact">
-            <Typography variant="h6">Contact</Typography>
-          </Link>
-        </div>
+    <>
+      <Container disableGutters maxWidth="false" className={styles.container}>
+        <Container maxWidth="xl" className="justify-between gap-6 row">
+          <div className="flex items-center gap-3">
+            <img src={logo} alt="hts" className="w-36" />
+            <div className="stack">
+              <Link to="/about-us">
+                <Typography variant="h6">About</Typography>
+              </Link>
+              <Link to="/contact">
+                <Typography variant="h6">Contact</Typography>
+              </Link>
+              <Link to="/results">
+                <Typography variant="h6">Results</Typography>
+              </Link>
+              <Link to="/announcements">
+                <Typography variant="h6">Announcemnts</Typography>
+              </Link>
+              <Link to="/faq">
+                <Typography variant="h6">FAQ</Typography>
+              </Link>
+            </div>
+          </div>
+          <div className="stack">
+            <Typography variant="h6">Social Media</Typography>
+            <div className="flex gap-6">
+              {
+                socialMedia.map((item) => (
+                  <Link to={item.link}>
+                    <img src={item.image} alt={item.title} className="w-7" />
+                  </Link>
+                ))
+              }
+            </div>
+          </div>
+        </Container>
       </Container>
-    </Container>
+      <div className="w-full py-3">
+        <Container maxWidth="xl">
+          <Typography variant="h6" color="gray">&copy; 2022, Hope Testing Service. All Rights Reserved</Typography>
+        </Container>
+      </div>
+    </>
   );
 }

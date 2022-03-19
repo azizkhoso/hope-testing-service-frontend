@@ -1,0 +1,41 @@
+.slide-root {
+  height: 300px;
+  @apply
+    /* Default */
+    flex
+    w-full
+    bg-center
+    bg-no-repeat
+    bg-cover
+}
+
+.slide-content {
+  @apply
+    /* Default */
+    flex
+    w-full
+    h-full
+    backdrop-filter
+    backdrop-brightness-50
+}
+
+.slide-title {
+  @apply
+    /* Default */
+    m-auto
+    font-bold
+    text-white
+    text-center
+}
+
+@media (min-width: 600px) {
+  .slide-root {
+    height: 375px;
+  }
+}
+
+@media (min-width: 900px) {
+  .slide-root {
+    height: 450px;
+  }
+}
