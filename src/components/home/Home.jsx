@@ -75,11 +75,11 @@ function Home() {
           ))}
         />
         <Typography variant="h4" className="text-center my-7">Results</Typography>
-        <Container maxWidth="xl" className="items-center justify-center gap-6 row">
+        <Container maxWidth="xl" className={styles['results-container']}>
           {
             results.map((item) => (
               <Card key={`${item.title}-${item.subject}`} className="px-4 stack" style={{ maxWidth: '230px' }}>
-                <Typography variant="h6" className="w-full font-bold text-center">{item.title}</Typography>
+                <Typography variant="h6" className={styles['result-title']}>{item.title}</Typography>
                 <div className="flex">
                   <span className="w-1/3"><Typography className="font-bold">Subject:</Typography></span>
                   <span className="flex-grow"><Typography>{item.subject}</Typography></span>
@@ -96,14 +96,14 @@ function Home() {
           }
         </Container>
         <Typography variant="h4" className="text-center my-7">Our Quality Services</Typography>
-        <div className="w-full py-3 text-white bg-primary">
-          <Container maxWidth="xl" className="items-center justify-center gap-9 row">
+        <div className={styles['services-root']}>
+          <Container maxWidth="xl" className={styles['services-container']}>
             {
               services.map((service) => (
                 <div className="gap-2 stack" style={{ width: '250px' }}>
                   <img src={service.icon} alt={service.title} className="mx-auto w-14" />
-                  <Typography variant="h5" className="font-bold text-center text-white">{service.title}</Typography>
-                  <Typography className="text-center text-white">{service.description}</Typography>
+                  <Typography variant="h5" className={styles['service-title']}>{service.title}</Typography>
+                  <Typography className={styles['service-description']}>{service.description}</Typography>
                 </div>
               ))
             }

@@ -39,8 +39,8 @@ export default function Footer() {
   return (
     <>
       <Container disableGutters maxWidth="false" className={styles.container}>
-        <Container maxWidth="xl" className="justify-between gap-6 row">
-          <div className="flex items-center gap-3">
+        <Container maxWidth="xl" className={styles.content}>
+          <div className={styles['brand-and-links']}>
             <img src={logo} alt="hts" className="w-36" />
             <div className="stack">
               <Link to="/about-us">
