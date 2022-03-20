@@ -22,8 +22,7 @@ import logo from '../../assets/logo.png';
 
 // Topbar should not be visible on following pages
 const isNotVisibleOn = [
-  '/signup',
-  '/login',
+  '/login/admin',
   '/admin',
   '/student',
   '/teacher',

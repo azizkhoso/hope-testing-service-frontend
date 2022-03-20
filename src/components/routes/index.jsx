@@ -23,8 +23,8 @@ import NotFound from '../NotFound';
 import Login from '../login';
 import Admin from '../admin';
 /* import Student from '../student';
-import Teacher from '../teacher';
-import SignUp from '../signup'; */
+import Teacher from '../teacher'; */
+import SignUp from '../signup';
 
 import ErrorBoundary from '../ErrorBoundary';
 import Footer from '../footer';
@@ -45,8 +45,8 @@ export default function AppRoutes() {
               <Route path="/faq" element={<Faq />} />
               <Route path="/login/*" element={<Login />} />
               <Route path="/admin/*" element={<Admin />} />
-              {/* <Route path="/signup/*" element={<SignUp />} />
-              <Route path="/student/*" element={<Student />} />
+              <Route path="/signup/*" element={<SignUp />} />
+              {/* <Route path="/student/*" element={<Student />} />
               <Route path="/teacher/*" element={<Teacher />} /> */}
               <Route path="/not-found/*" element={<NotFound />} />
               <Route path="*" element={<Navigate replace to="/not-found" />} />
