@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { Suspense, lazy } from 'react';
+
 import {
   BrowserRouter,
   Routes,
@@ -14,20 +15,22 @@ import { ReactQueryDevtools } from 'react-query/devtools';
 
 import Topbar from '../topbar';
 import Home from '../home';
-import About from '../about';
-import Contact from '../contact';
-import DemoTests from '../demo-tests';
-import Faq from '../faq';
 import Toasts from '../toasts';
 import NotFound from '../NotFound';
-import Login from '../login';
-import Admin from '../admin';
 /* import Student from '../student';
 import Teacher from '../teacher'; */
-import SignUp from '../signup';
 
 import ErrorBoundary from '../ErrorBoundary';
 import Footer from '../footer';
+import LoadingSplashScreen from './LoadingSplashScreen';
+
+const About = lazy(() => import('../about'));
+const Contact = lazy(() => import('../contact'));
+const DemoTests = lazy(() => import('../demo-tests'));
+const Faq = lazy(() => import('../faq'));
+const Login = lazy(() => import('../login'));
+const Admin = lazy(() => import('../admin'));
+const SignUp = lazy(() => import('../signup'));
 
 const queryClient = new QueryClient();
 export default function AppRoutes() {
@@ -39,13 +42,62 @@ export default function AppRoutes() {
             <Topbar />
             <Routes>
               <Route index element={<Home />} />
-              <Route path="/about-us" element={<About />} />
-              <Route path="/contact" element={<Contact />} />
-              <Route path="/demo-tests/*" element={<DemoTests />} />
-              <Route path="/faq" element={<Faq />} />
-              <Route path="/login/*" element={<Login />} />
-              <Route path="/admin/*" element={<Admin />} />
-              <Route path="/signup/*" element={<SignUp />} />
+              <Route
+                path="/about-us"
+                element={(
+                  <Suspense fallback={<LoadingSplashScreen />}>
+                    <About />
+                  </Suspense>
+                )}
+              />
+              <Route
+                path="/contact"
+                element={(
+                  <Suspense fallback={<LoadingSplashScreen />}>
+                    <Contact />
+                  </Suspense>
+                )}
+              />
+              <Route
+                path="/demo-tests/*"
+                element={(
+                  <Suspense fallback={<LoadingSplashScreen />}>
+                    <DemoTests />
+                  </Suspense>
+                )}
+              />
+              <Route
+                path="/faq"
+                element={(
+                  <Suspense fallback={<LoadingSplashScreen />}>
+                    <Faq />
+                  </Suspense>
+                )}
+              />
+              <Route
+                path="/login/*"
+                element={(
+                  <Suspense fallback={<LoadingSplashScreen />}>
+                    <Login />
+                  </Suspense>
+                )}
+              />
+              <Route
+                path="/admin/*"
+                element={(
+                  <Suspense fallback={<LoadingSplashScreen />}>
+                    <Admin />
+                  </Suspense>
+                )}
+              />
+              <Route
+                path="/signup/*"
+                element={(
+                  <Suspense fallback={<LoadingSplashScreen />}>
+                    <SignUp />
+                  </Suspense>
+                )}
+              />
               {/* <Route path="/student/*" element={<Student />} />
               <Route path="/teacher/*" element={<Teacher />} /> */}
               <Route path="/not-found/*" element={<NotFound />} />
